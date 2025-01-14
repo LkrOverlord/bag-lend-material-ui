@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import Hero from '@/components/landing/hero'
 import React from 'react'
 
 type Props = {}
@@ -6,7 +6,7 @@ type Props = {}
 const LandingPage = (props: Props) => {
   return (
     <>
-    <Button>Hola mundo</Button>
+    <Hero />
     </>
   )
 }

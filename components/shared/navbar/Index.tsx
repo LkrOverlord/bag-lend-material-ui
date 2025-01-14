@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { AppBar, Toolbar, Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { AppBar, Toolbar, Box, useScrollTrigger } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import Menu from '../menu/Index';
@@ -10,6 +10,11 @@ import AppLogo from '@/public/assets/AppLogo.svg';
 
 const Navbar = () => {
   const [activeItem, setActiveItem] = useState('/');
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+  });
+
 
   const menuItems = [
     { 
@@ -35,7 +40,10 @@ const Navbar = () => {
   ];
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed" sx={{
+      backgroundColor:"transparent",
+      boxShadow: trigger ? 1 : 'none',
+    }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         {/* Logo */}
         <Box>
