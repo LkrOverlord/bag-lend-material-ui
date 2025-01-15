@@ -1,5 +1,5 @@
 import Navbar from '@/components/shared/navbar/Index';
-import ThemeProvider from '@/components/theme-provider';
+import { ThemeRegistry } from '@/components/theme-provider';
 import { Roboto } from 'next/font/google';
 
 
@@ -17,10 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={roboto.className}>
       <body>
-        <ThemeProvider>
+        <ThemeRegistry>
           <Navbar />
           {children}
-        </ThemeProvider>
+        </ThemeRegistry>
       </body>
     </html>
   );
