@@ -1,5 +1,5 @@
 {
-  "name": "bag-chatter-material-ui",
+  "name": "test-init-project",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,8 +11,10 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.3.1",
-    "@mui/material": "^6.3.1",
+    "@mui/icons-material": "^6.4.7",
+    "@mui/material": "^6.4.7",
+    "@mui/material-nextjs": "^6.4.3",
+    "@mui/system": "^6.4.7",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18"
