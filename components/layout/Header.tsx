@@ -34,11 +34,13 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="sticky" sx={{ mb: 2}} >
+    <AppBar position="sticky" sx={{ mb: 2 }} >
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between' }}>
           {/* Logo - Desktop */}
-          <Image src={LogoSvg} alt='logo' />
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            <Image src={LogoSvg} alt='logo' />
+          </Box>
 
           {/* Menu - Mobile */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -79,7 +81,7 @@ export default function Header() {
           </Box>
 
           {/* Logo - Mobile */}
-          <Typography
+          {/* <Typography
             variant="h5"
             noWrap
             component="div"
@@ -93,10 +95,13 @@ export default function Header() {
             }}
           >
             MaterialNext
-          </Typography>
+          </Typography> */}
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <Image src={LogoSvg} alt='logo' />
+          </Box>
 
           {/* Menu - Desktop */}
-          <div style={{ display: 'flex', justifyContent:'center', alignItems: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
                 <Button
