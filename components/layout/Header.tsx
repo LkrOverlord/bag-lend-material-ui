@@ -1,23 +1,25 @@
 'use client';
 
 import { useState } from 'react';
-import { 
-  AppBar, 
-  Box, 
-  Button, 
-  Container, 
-  IconButton, 
-  Menu, 
-  MenuItem, 
-  Toolbar, 
-  Typography 
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useThemeContext } from '@/theme/ThemeProvider';
+import Image from 'next/image';
+import LogoSvg from '@/public/assets/Logo.svg'
 
-const pages = ['Inicio', 'Características', 'Precios', 'Contacto'];
+const pages = ['HOW IT WORKS', 'ABOUT US', 'FAQS'];
 
 export default function Header() {
   const { mode, toggleColorMode } = useThemeContext();
@@ -32,24 +34,11 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="static" sx={{ mb: 2 }}>
+    <AppBar position="sticky" sx={{ mb: 2}} >
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between' }}>
           {/* Logo - Desktop */}
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            MaterialNext
-          </Typography>
+          <Image src={LogoSvg} alt='logo' />
 
           {/* Menu - Mobile */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -107,24 +96,27 @@ export default function Header() {
           </Typography>
 
           {/* Menu - Desktop */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
+          <div style={{ display: 'flex', justifyContent:'center', alignItems: 'center' }}>
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              {pages.map((page) => (
+                <Button
+                  key={page}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page}
+                </Button>
+              ))}
+            </Box>
 
-          {/* Theme Toggle Button */}
-          <Box sx={{ flexGrow: 0 }}>
-            <IconButton onClick={toggleColorMode} color="inherit">
-              {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
-            </IconButton>
-          </Box>
+            {/* Theme Toggle Button */}
+            <Box>
+              <IconButton onClick={toggleColorMode} color="inherit">
+                {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+            </Box>
+          </div>
+
         </Toolbar>
       </Container>
     </AppBar>
