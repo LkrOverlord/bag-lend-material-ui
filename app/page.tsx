@@ -1,3 +1,4 @@
+import HeroSection from '@/components/features/landing/HeroSection';
 import Header from '@/components/layout/Header';
 import ActionButton from '@/components/ui/ActionButton';
 import DataTable from '@/components/ui/DataTable';
@@ -7,10 +8,11 @@ import { Box, Container, Typography } from '@mui/material';
 
 export default function Home() {
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header />
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: "red" }}>
+      {/* <Header /> */}
+      <HeroSection />
       
-      <Container component="main" sx={{ flexGrow: 1, py: 8 }}>
+      {/* <Container component="main" sx={{ flexGrow: 1, py: 8 }}>
         <Typography variant="h3" component="h1" sx={{ mb: 6, textAlign: 'center' }}>
           Bienvenido a Next.js con Material UI
         </Typography>
@@ -48,7 +50,7 @@ export default function Home() {
           </Typography>
           <DataTable />
         </Box>
-      </Container>
+      </Container> */}
     </Box>
   );
 }

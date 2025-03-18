@@ -18,6 +18,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useThemeContext } from '@/theme/ThemeProvider';
 import Image from 'next/image';
 import LogoSvg from '@/public/assets/Logo.svg'
+import ProfileButton from './ProfileButton';
 
 const pages = ['HOW IT WORKS', 'ABOUT US', 'FAQS'];
 
@@ -34,9 +35,18 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="sticky" sx={{ mb: 2 }} >
-      <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <AppBar
+      position="fixed"
+      sx={{
+        backgroundColor: "transparent", // Fondo transparente
+        boxShadow: "none", // Elimina la sombra predeterminada
+        backgroundImage: "none", // Elimina cualquier gradiente o imagen de fondo
+      }}
+    >
+      <Container maxWidth="xl" sx={{
+        backgroundColor: "transparent",
+      }}>
+        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between', backgroundColor: "transparent" }}>
           {/* Logo - Desktop */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Image src={LogoSvg} alt='logo' />
@@ -98,6 +108,8 @@ export default function Header() {
                 </Button>
               ))}
             </Box>
+
+            <ProfileButton />
 
             {/* Theme Toggle Button */}
             <Box>
