@@ -81,21 +81,6 @@ export default function Header() {
           </Box>
 
           {/* Logo - Mobile */}
-          {/* <Typography
-            variant="h5"
-            noWrap
-            component="div"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            MaterialNext
-          </Typography> */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <Image src={LogoSvg} alt='logo' />
           </Box>
