@@ -11,6 +11,9 @@ export default function Home() {
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: "red" }}>
       {/* <Header /> */}
       <HeroSection />
+      <HeroSection />
+      <HeroSection />
+      <HeroSection />
       
       {/* <Container component="main" sx={{ flexGrow: 1, py: 8 }}>
         <Typography variant="h3" component="h1" sx={{ mb: 6, textAlign: 'center' }}>
