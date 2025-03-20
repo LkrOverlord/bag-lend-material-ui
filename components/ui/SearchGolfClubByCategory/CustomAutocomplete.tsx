@@ -42,6 +42,7 @@ export default function CustomAutocomplete({
       value={selectedOptions} // Opciones seleccionadas
       onChange={handleSelectionChange} // Maneja el cambio de selección
       disableCloseOnSelect // No cierra el desplegable al seleccionar una opción
+      freeSolo
       renderInput={(params) => (
         <TextField
           {...params}
@@ -51,16 +52,21 @@ export default function CustomAutocomplete({
             '& .MuiOutlinedInput-root': {
               backgroundColor: theme.palette.background.paper, // Fondo del input
               color: theme.palette.text.primary, // Color del texto
+              padding: '0', // Elimina el padding
+              margin: '0', // Elimina el margin
             },
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: theme.palette.divider, // Color del borde
+            },
+            '& .MuiOutlinedInput-input': {
+              padding: '8px 4px', // Reduce el padding del input
             },
           }}
         />
       )}
       renderTags={(value: string[], getTagProps) =>
         value.map((option: string, index: number) => (
-            <Chip
+          <Chip
             {...getTagProps({ index })} // Esto ya incluye la propiedad `key`
             label={option}
             {...getTagProps({ index })}
@@ -73,6 +79,9 @@ export default function CustomAutocomplete({
             sx={{
               backgroundColor: theme.palette.primary.main, // Fondo del chip
               color: theme.palette.primary.contrastText, // Color del texto del chip
+              height: '24px', // Reduce la altura del chip
+              margin: '2px 4px', // Ajusta el margin de los chips
+              padding: '0', // Elimina el padding interno
               '& .MuiChip-deleteIcon': {
                 color: theme.palette.primary.contrastText, // Color del ícono de cierre
               },
@@ -91,6 +100,7 @@ export default function CustomAutocomplete({
               '&.Mui-checked': {
                 color: theme.palette.primary.main, // Color del checkbox seleccionado
               },
+              padding: '4px', // Reduce el padding del checkbox
             }}
           />
           {option}
@@ -100,7 +110,14 @@ export default function CustomAutocomplete({
         '& .MuiAutocomplete-popupIndicator': {
           color: theme.palette.text.primary, // Color del ícono de desplegable
         },
-        width: '100%', // 
+        width: '100%', // Ancho completo
+        '& .MuiAutocomplete-inputRoot': {
+          padding: '0', // Elimina el padding del contenedor
+          margin: '0', // Elimina el margin del contenedor
+        },
+        '& .MuiAutocomplete-tag': {
+          margin: '2px 4px', // Ajusta el margin de los tags
+        },
       }}
     />
   );
