@@ -5,13 +5,14 @@ import BaseCard, { type BaseCardProps } from "./BaseCard"
 import { useRouter } from "next/navigation"
 import { useMediaQuery, useTheme } from "@mui/material"
 
-interface ProductCardProps extends Omit<BaseCardProps, "onClick" | "menuItems"> {
+interface ProductCardProps extends Omit<BaseCardProps, "onClick" | "menuItems" | "image"> {
   productId: string
   onEdit?: () => void
   onPause?: () => void
   onDelete?: () => void
   onReport?: () => void
   cardType: "landing" | "listing" | "rental"
+  image: string | { src: string } // Mismo tipo que BaseCard
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -25,19 +26,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const router = useRouter()
   const theme = useTheme()
-const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
   const handleCardClick = () => {
-    if (cardType === "rental") {
-      // Open drawer or side menu for rentals
-      // This would be implemented in the parent component
-    } else {
-      // Navigate to product detail page for landing and listings
-      router.push(`/products/${productId}`)
-    }
+    cardType !== "rental" && router.push(`/products/${productId}`)
   }
 
-  // Configure menu items based on card type
   const getMenuItems = () => {
     switch (cardType) {
       case "listing":
@@ -54,32 +48,21 @@ const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
   }
 
   return (
-    // <BaseCard
-    //   {...baseCardProps}
-    //   id={productId}
-    //   onClick={handleCardClick}
-    //   menuItems={getMenuItems()}
-    //   showMenu={cardType !== "landing"}
-    //   variant={cardType === "landing" ? "vertical" : "horizontal"}
-    // />
     <BaseCard
-    {...baseCardProps}
-    id={productId}
-    onClick={handleCardClick}
-    menuItems={getMenuItems()}
-    showMenu={cardType !== "landing"}
-    variant={cardType === "landing" ? "vertical" : "horizontal"}
-    sx={cardType === "landing" ? {
-      width: isMobile ? 171 : 325,
-      height: isMobile ? 291 : 428,
-      '& .MuiCardMedia-root': {
-        height: isMobile ? 120 : 240
-      }
-    } : undefined}
-    imageHeight={cardType === "landing" ? (isMobile ? 120 : 240) : 200}
-  />
+      {...baseCardProps}
+      id={productId}
+      onClick={handleCardClick}
+      menuItems={getMenuItems()}
+      showMenu={cardType !== "landing"}
+      variant={cardType === "landing" ? "vertical" : "horizontal"}
+      tags={cardType === "landing" ? [] : baseCardProps.tags}
+      sx={cardType === "landing" ? {
+        width: isMobile ? "100%" : "100%",
+        height: isMobile ? 291 : 428,
+      } : undefined}
+      imageHeight={cardType === "landing" ? (isMobile ? 120 : 240) : 200}
+    />
   )
 }
 
 export default ProductCard
-
