@@ -4,25 +4,6 @@
   margin: 0;
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-  /* Suavizado de texto */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  /* Mejora de la legibilidad */
-  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
-  word-break: break-word;
-  hyphens: auto;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 /* Apply font variables to Material UI components */
 :root {
   --font-rubik: 'Rubik', sans-serif;

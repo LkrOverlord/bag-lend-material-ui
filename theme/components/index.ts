@@ -1,3 +1,4 @@
+// src/theme/theme.ts
 import { PaletteMode } from '@mui/material';
 import { getButtonOverrides } from './button';
 import { getCardOverrides } from './card';
@@ -25,6 +26,39 @@ export const components = (mode: PaletteMode) => ({
       },
     },
   },
+  MuiCssBaseline: {
+    styleOverrides: {
+      '@global': {
+        ':root': {
+          '--Gray-scale-500': mode === 'light' ? '#A6A6A6' : '#757575',
+        },
+        body: {
+          fontFeatureSettings: "'liga' off",
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
+        },
+      },
+    },
+  },
+  MuiTypography: {
+    styleOverrides: {
+      root: {
+        '&.MuiTypography-gutterBottom': {
+          marginBottom: '0.75em'
+        }
+      },
+      h6: {
+        color: 'var(--Gray-scale-900)'
+      },
+      subtitle1: {
+        color: 'var(--Gray-scale-900)'
+      },
+      subtitle2: {
+        color: 'var(--Gray-scale-700)'
+      },
+      overline: {
+        color: 'var(--Gray-scale-500)'
+      }
+    }
+  }
 });
-
-

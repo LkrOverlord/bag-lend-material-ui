@@ -1,8 +1,7 @@
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import ThemeProvider from '@/theme/ThemeProvider';
 import Header from '@/components/layout/Header';
-import { FontProvider } from '@/theme/fonts';
-
+import { plusJakarta, rubik } from '@/theme/fonts';
 
 export const metadata = {
   title: 'Next.js con Material UI',
@@ -15,15 +14,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+    <html lang="es" className={`${rubik.variable} ${plusJakarta.variable}`}>
       <body>
         <AppRouterCacheProvider>
-          <FontProvider>
             <ThemeProvider>
               <Header />
               {children}
             </ThemeProvider>
-          </FontProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
