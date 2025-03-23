@@ -2,10 +2,12 @@ import { PaletteMode } from '@mui/material';
 import { getButtonOverrides } from './button';
 import { getCardOverrides } from './card';
 import { getTableOverrides } from './table';
+import { getCardContentOverrides } from './cardContent';
 
 export const components = (mode: PaletteMode) => ({
   MuiButton: getButtonOverrides(mode),
   MuiCard: getCardOverrides(mode),
+  MuiCardContent: getCardContentOverrides(mode),
   MuiTable: getTableOverrides(mode),
   MuiAppBar: {
     styleOverrides: {

@@ -87,6 +87,7 @@ export default function ExamplesPage() {
                 [theme.breakpoints.down("sm")]: {
                   spacing: 2, // Reduce el espacio entre cards en móviles
                 },
+                paddingBottom:"10px"
               }}
             >
               {products.map((product) => (

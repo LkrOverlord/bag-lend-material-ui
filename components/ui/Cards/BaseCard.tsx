@@ -93,36 +93,46 @@ const BaseCard = ({
         {/* Menu */}
         {showMenu && menuItems.length > 0 && <CardMenu menuItems={menuItems} />}
 
-        <CardContent sx={{ flexGrow: 1, pb: 1 }}>
-          <Typography variant="h6" component="h2" gutterBottom noWrap>
-            {title}
-          </Typography>
+        <CardContent sx={{ flexGrow: 1, py: 2 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
 
-          {/* Location */}
-          {showLocation && location && (
-            <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
-              <LocationOnIcon fontSize="small" color="action" sx={{ mr: 0.5 }} />
-              <Typography variant="body2" color="text.secondary" noWrap>
-                {location}
-              </Typography>
+            {/* Título */}
+            <Typography variant="h6" component="h2" noWrap>
+              {title}
+            </Typography>
+
+            {/* Contenido adicional (ubicación y calificación) */}
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1, flex: 1, justifyContent: "center", margin:0, padding:0 }}>
+
+              {/* Ubicación */}
+              {showLocation && location && (
+                <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
+                  <LocationOnIcon fontSize="small" color="action" sx={{ mr: 0.5 }} />
+                  <Typography variant="body2" color="text.secondary" noWrap>
+                    {location}
+                  </Typography>
+                </Box>
+              )}
+
+              {/* Calificación */}
+              {showRating && rating !== undefined && (
+                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                  <Rating value={rating} precision={0.5} size="small" readOnly />
+                  <Typography variant="body2" color="text.secondary" sx={{ ml: 0.5 }}>
+                    {rating}
+                  </Typography>
+                </Box>
+              )}
+
             </Box>
-          )}
 
-          {/* Rating */}
-          {showRating && rating !== undefined && (
-            <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-              <Rating value={rating} precision={0.5} size="small" readOnly />
-              <Typography variant="body2" color="text.secondary" sx={{ ml: 0.5 }}>
-                {rating}
-              </Typography>
-            </Box>
-          )}
-
-          {/* Price */}
-          <Typography variant="h6" component="div" sx={{ fontWeight: "bold", mt: "auto" }}>
-            ${price} {currency}/{period}
-          </Typography>
+            {/* Precio */}
+            <Typography variant="h6" component="div" sx={{ fontWeight: "bold", mt: "auto" }}>
+              ${price} {currency}/{period}
+            </Typography>
+          </Box>
         </CardContent>
+
       </Box>
     </Card>
   )
