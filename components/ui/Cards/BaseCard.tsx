@@ -3,7 +3,6 @@
 import { Box, Card, CardContent, Rating, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { LocationOn as LocationOnIcon } from "@mui/icons-material"
 
-
 import { BaseCardProps, CardType } from "@/types/CardTypes"
 import { FavoriteButton } from "./FavoriteButton"
 import { TagDisplay } from "./TagDisplay"
@@ -49,7 +48,6 @@ const BaseCard = ({
         display: "flex",
         flexDirection: variant === "vertical" ? "column" : "row",
         cursor: onClick ? "pointer" : "default",
-        position: "relative",
         height: "428px",
         width: "100%",
         [theme.breakpoints.down("sm")]: {
@@ -72,14 +70,24 @@ const BaseCard = ({
           backgroundPosition: "center",
           borderTopLeftRadius: variant === "vertical" ? "12px" : 0,
           borderTopRightRadius: variant === "vertical" ? "12px" : 0,
+          display: "flex",
+          flexDirection: "column",
           position: "relative",
         }}
       >
-        {/* Favorite Button */}
-        {showFavorite && <FavoriteButton id={id} initialFavorite={isFavorite} onToggle={onFavoriteToggle} />}
+        {/* Top section with favorite button and tag */}
+        <Box sx={{ 
+          display: "flex", 
+          justifyContent: "space-between", 
+          padding: 1,
+          height: "auto"
+        }}>
+          {/* Favorite Button */}
+          {showFavorite && <FavoriteButton id={id} initialFavorite={isFavorite} onToggle={onFavoriteToggle} />}
 
-        {/* Tag Display - only show if there are tags */}
-        {tags.length > 0 && tags[0] && <TagDisplay tag={tags[0]} cardType={cardType} />}
+          {/* Tag Display - only show if there are tags */}
+          {tags.length > 0 && tags[0] && <TagDisplay tag={tags[0]} cardType={cardType} />}
+        </Box>
       </Box>
 
       <Box
@@ -91,34 +99,55 @@ const BaseCard = ({
         }}
       >
         {/* Menu */}
-        {showMenu && menuItems.length > 0 && <CardMenu menuItems={menuItems} />}
+        {showMenu && menuItems.length > 0 && (
+          <Box sx={{ display: "flex", justifyContent: "flex-end", p: 1 }}>
+            <CardMenu menuItems={menuItems} />
+          </Box>
+        )}
 
         <CardContent sx={{ flexGrow: 1, py: 2 }}>
           <Box sx={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
 
-            {/* Título */}
-            <Typography variant="h6" component="h2" noWrap>
+            {/* Title/Name - Using variant h6 that matches the style specs */}
+            <Typography 
+              variant="h6" 
+              component="h2" 
+              noWrap
+              color="text.primary"
+              sx={{ 
+                fontWeight: 600,
+                mb: 1
+              }}
+            >
               {title}
             </Typography>
 
-            {/* Contenido adicional (ubicación y calificación) */}
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1, flex: 1, justifyContent: "center", margin:0, padding:0 }}>
+            {/* Content section (location and rating) */}
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1, flex: 1, justifyContent: "center", margin: 0, padding: 0 }}>
 
-              {/* Ubicación */}
+              {/* Location - Using subtitle2 for the semi-bold medium text style */}
               {showLocation && location && (
                 <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
                   <LocationOnIcon fontSize="small" color="action" sx={{ mr: 0.5 }} />
-                  <Typography variant="body2" color="text.secondary" noWrap>
+                  <Typography 
+                    variant="subtitle2" 
+                    color="text.secondary" 
+                    noWrap
+                  >
                     {location}
                   </Typography>
                 </Box>
               )}
 
-              {/* Calificación */}
+              {/* Rating - Using subtitle2 for the semi-bold medium text style */}
               {showRating && rating !== undefined && (
                 <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
                   <Rating value={rating} precision={0.5} size="small" readOnly />
-                  <Typography variant="body2" color="text.secondary" sx={{ ml: 0.5 }}>
+                  <Typography 
+                    variant="subtitle2" 
+                    color="text.secondary" 
+                    sx={{ ml: 0.5 }}
+                  >
                     {rating}
                   </Typography>
                 </Box>
@@ -126,8 +155,12 @@ const BaseCard = ({
 
             </Box>
 
-            {/* Precio */}
-            <Typography variant="h6" component="div" sx={{ fontWeight: "bold", mt: "auto" }}>
+            {/* Price - Using subtitle1 for the semi-bold large text style */}
+            <Typography 
+              variant="subtitle1" 
+              component="div"
+              color="text.primary"
+            >
               ${price} {currency}/{period}
             </Typography>
           </Box>
@@ -139,4 +172,3 @@ const BaseCard = ({
 }
 
 export default BaseCard
-

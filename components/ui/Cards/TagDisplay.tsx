@@ -16,10 +16,6 @@ export const TagDisplay = ({ tag, cardType }: TagDisplayProps) => {
     return (
       <Box
         sx={{
-          position: "absolute",
-          top: 8,
-          right: 8,
-          zIndex: 1,
           display: "flex",
           height: "28px",
           padding: "4px 8px",
@@ -46,14 +42,9 @@ export const TagDisplay = ({ tag, cardType }: TagDisplayProps) => {
       color="primary"
       variant="filled"
       sx={{
-        position: "absolute",
-        top: 8,
-        right: 8,
-        zIndex: 1,
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
       }}
     />
   )
 }
-

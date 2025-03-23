@@ -25,10 +25,6 @@ export const FavoriteButton = ({ id, initialFavorite, onToggle }: FavoriteButton
   return (
     <IconButton
       sx={{
-        position: "absolute",
-        top: 8,
-        left: 8,
-        zIndex: 1,
         bgcolor: "background.paper",
         "&:hover": { bgcolor: "background.default" },
       }}
@@ -38,4 +34,3 @@ export const FavoriteButton = ({ id, initialFavorite, onToggle }: FavoriteButton
     </IconButton>
   )
 }
-

@@ -7,6 +7,8 @@ import {
   Chip,
   Checkbox,
   useTheme,
+  InputProps,
+  Typography,
 } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -19,12 +21,14 @@ interface CustomAutocompleteProps {
   options: string[]; // Opciones que llegan desde afuera
   placeholder: string; // Placeholder del input
   onSelectionChange: (selected: string[]) => void; // Callback cuando cambian las selecciones
+  inputProps?: InputProps; // Props adicionales para el input
 }
 
 export default function CustomAutocomplete({
   options,
   placeholder,
   onSelectionChange,
+  inputProps,
 }: CustomAutocompleteProps) {
   const theme = useTheme(); // Usar el tema de Material-UI
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]); // Opciones seleccionadas
@@ -48,18 +52,35 @@ export default function CustomAutocomplete({
           {...params}
           placeholder={placeholder} // Placeholder del input
           variant="outlined"
+          InputProps={{
+            ...params.InputProps,
+            ...inputProps,
+            sx: {
+              '& .MuiInputBase-input': {
+                // Aplicando estilo de placeholder usando la variante overline que configuramos
+                '&::placeholder': {
+                  color: theme.palette.mode === 'light' ? 'var(--Gray-scale-500, #A6A6A6)' : theme.palette.grey[500],
+                  opacity: 1,
+                },
+                // Para texto ingresado, usar el color de texto primario del tema
+                color: theme.palette.text.primary,
+                fontFamily: theme.typography.overline.fontFamily,
+                fontSize: theme.typography.overline.fontSize,
+                fontWeight: theme.typography.overline.fontWeight,
+                lineHeight: theme.typography.overline.lineHeight,
+                fontFeatureSettings: "'liga' off",
+                padding: '8px 4px', // Reduce el padding del input
+              },
+            },
+          }}
           sx={{
             '& .MuiOutlinedInput-root': {
               backgroundColor: theme.palette.background.paper, // Fondo del input
-              color: theme.palette.text.primary, // Color del texto
               padding: '0', // Elimina el padding
               margin: '0', // Elimina el margin
             },
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: theme.palette.divider, // Color del borde
-            },
-            '& .MuiOutlinedInput-input': {
-              padding: '8px 4px', // Reduce el padding del input
             },
           }}
         />
@@ -68,8 +89,11 @@ export default function CustomAutocomplete({
         value.map((option: string, index: number) => (
           <Chip
             {...getTagProps({ index })} // Esto ya incluye la propiedad `key`
-            label={option}
-            {...getTagProps({ index })}
+            label={
+              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                {option}
+              </Typography>
+            }
             onDelete={() => {
               // Elimina la opción seleccionada
               const newSelected = selectedOptions.filter((item) => item !== option);
@@ -103,7 +127,7 @@ export default function CustomAutocomplete({
               padding: '4px', // Reduce el padding del checkbox
             }}
           />
-          {option}
+          <Typography variant="body1">{option}</Typography>
         </li>
       )}
       sx={{

@@ -1,10 +1,8 @@
-import { Inter } from 'next/font/google';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import ThemeProvider from '@/theme/ThemeProvider';
 import Header from '@/components/layout/Header';
+import { FontProvider } from '@/theme/fonts';
 
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Next.js con Material UI',
@@ -18,12 +16,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={inter.className}>
+      <body>
         <AppRouterCacheProvider>
-          <ThemeProvider>
-            <Header />
-            {children}
-          </ThemeProvider>
+          <FontProvider>
+            <ThemeProvider>
+              <Header />
+              {children}
+            </ThemeProvider>
+          </FontProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

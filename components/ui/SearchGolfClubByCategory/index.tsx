@@ -4,7 +4,6 @@ import CustomAutocomplete from './CustomAutocomplete';
 import SearchButton from '../Buttons/SearchButton';
 import { useThemeContext } from '@/theme/ThemeProvider';
 
-
 const golfClubs = [
   "Driver",
   "Wood",
@@ -23,7 +22,7 @@ type Props = {};
 
 const SearchGolfClubByCity = (props: Props) => {
   const { mode } = useThemeContext(); // Obtén el modo actual (light/dark)
-
+  
   return (
     <>
       <Box sx={{
@@ -44,7 +43,11 @@ const SearchGolfClubByCity = (props: Props) => {
           gap: "32px",
         }}>
           <Box sx={{ width: "237px" }}>
-            <Typography variant="subtitle1" sx={{ color: "text.primary" }}>
+            <Typography 
+              variant="body2" 
+              color="text.primary"
+              sx={{ mb: 0.5 }}
+            >
               Where would you like to rent?
             </Typography>
             <CustomAutocomplete
@@ -55,7 +58,6 @@ const SearchGolfClubByCity = (props: Props) => {
               }}
             />
           </Box>
-
           <Divider
             orientation="vertical"
             flexItem
@@ -64,9 +66,12 @@ const SearchGolfClubByCity = (props: Props) => {
               borderWidth: 1,
             }}
           />
-
           <Box sx={{ width: "237px" }}>
-            <Typography variant="subtitle1" sx={{ color: "text.primary" }}>
+            <Typography 
+              variant="body2" 
+              color="text.primary"
+              sx={{ mb: 0.5 }}
+            >
               What are you looking for?
             </Typography>
             <CustomAutocomplete
@@ -77,7 +82,6 @@ const SearchGolfClubByCity = (props: Props) => {
               }}
             />
           </Box>
-
           <SearchButton />
         </Box>
       </Box>
