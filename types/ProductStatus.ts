@@ -1,0 +1,1 @@
+export type ProductStatus = "pending" | "active" | "paused" | undefined

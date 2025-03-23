@@ -1,21 +1,12 @@
 "use client"
 
-import type React from "react"
-import BaseCard, { type BaseCardProps } from "./BaseCard"
 import { useRouter } from "next/navigation"
 import { useMediaQuery, useTheme } from "@mui/material"
+import BaseCard from "./BaseCard"
+import { ProductCardProps } from "@/types/CardTypes"
 
-interface ProductCardProps extends Omit<BaseCardProps, "onClick" | "menuItems" | "image"> {
-  productId: string
-  onEdit?: () => void
-  onPause?: () => void
-  onDelete?: () => void
-  onReport?: () => void
-  cardType: "landing" | "listing" | "rental"
-  image: string | { src: string } // Mismo tipo que BaseCard
-}
 
-const ProductCard: React.FC<ProductCardProps> = ({
+const ProductCard = ({
   productId,
   onEdit,
   onPause,
@@ -23,13 +14,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onReport,
   cardType,
   ...baseCardProps
-}) => {
+}: ProductCardProps) => {
   const router = useRouter()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
   const handleCardClick = () => {
-    cardType !== "rental" && router.push(`/products/${productId}`)
+    if (cardType !== "rental") {
+      router.push(`/products/${productId}`)
+    }
   }
 
   const getMenuItems = () => {
@@ -55,14 +48,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
       menuItems={getMenuItems()}
       showMenu={cardType !== "landing"}
       variant={cardType === "landing" ? "vertical" : "horizontal"}
-      tags={cardType === "landing" ? [] : baseCardProps.tags}
-      sx={cardType === "landing" ? {
-        width: isMobile ? "100%" : "100%",
-        height: isMobile ? 291 : 428,
-      } : undefined}
+      cardType={cardType}
+      sx={
+        cardType === "landing"
+          ? {
+              width: isMobile ? "100%" : "100%",
+              height: isMobile ? 291 : 428,
+            }
+          : undefined
+      }
       imageHeight={cardType === "landing" ? (isMobile ? 120 : 240) : 200}
     />
   )
 }
 
 export default ProductCard
+

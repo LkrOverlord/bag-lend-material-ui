@@ -103,6 +103,7 @@ export default function ExamplesPage() {
                     isFavorite={product.isFavorite}
                     onFavoriteToggle={() => handleFavoriteToggle(product.id)}
                     cardType="landing"
+                    
                   />
                 </Grid>
               ))}
