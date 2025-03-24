@@ -29,6 +29,8 @@ export default function ExamplesPage() {
   const handleDelete = (id: string) => console.log(`Delete product ${id}`)
   const handleReport = (id: string) => console.log(`Report problem for product ${id}`)
 
+  const cardType = "favorite"
+
   return (
     <Box sx={{ overflowX: "hidden" }}>
       {/* Hero Section sin márgenes ni paddings */}
@@ -91,7 +93,7 @@ export default function ExamplesPage() {
               }}
             >
               {products.map((product) => (
-                <Grid size={{ xs: 6, sm: 6, md: 4, lg: 3 }} key={`landing-${product.id}`}>
+                <Grid size={{ xs: cardType === "favorite" ? 12: 6, sm: 6, md: 4, lg: 3 }} key={`landing-${product.id}`}>
                   <ProductCard
                     productId={product.id}
                     id={product.id}
@@ -103,7 +105,7 @@ export default function ExamplesPage() {
                     tags={product.tags}
                     isFavorite={product.isFavorite}
                     onFavoriteToggle={() => handleFavoriteToggle(product.id)}
-                    cardType="landing"
+                    cardType={cardType}
                     
                   />
                 </Grid>

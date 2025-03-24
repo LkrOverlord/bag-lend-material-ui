@@ -48,16 +48,27 @@ const ProductCard = ({
       menuItems={getMenuItems()}
       showMenu={cardType !== "landing"}
       variant={cardType === "landing" ? "vertical" : "horizontal"}
+      // variant={cardType === "landing" ? "vertical" : "horizontal"}
       cardType={cardType}
+      // sx={
+      //   cardType === "landing"
+      //     ? {
+      //         width: isMobile ? "100%" : "100%",
+      //         height: isMobile ? 291 : 428,
+      //       }
+      //     : undefined
+      // }
+
       sx={
-        cardType === "landing"
+        cardType === "landing" || cardType === "favorite"
           ? {
               width: isMobile ? "100%" : "100%",
-              height: isMobile ? 291 : 428,
+              height: isMobile && cardType === "favorite" ? 120 : 428,
             }
           : undefined
       }
-      imageHeight={cardType === "landing" ? (isMobile ? 120 : 240) : 200}
+      // imageHeight={cardType === "landing" ? (isMobile ? 120 : 240) : 200}
+      imageHeight={cardType === "landing" || cardType === "favorite" ? (isMobile ? 120 : 240) : 200}
     />
   )
 }

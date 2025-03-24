@@ -1,12 +1,17 @@
-// Create a new file like cardContent.ts or add to an existing file
 import { PaletteMode } from '@mui/material';
 
 export const getCardContentOverrides = (mode: PaletteMode) => ({
-  styleOverrides: {
+  styleOverrides: (theme: any) => ({
     root: {
       '&:last-child': {
-        paddingBottom: 16,
-      },
-    },
-  },
+        padding: theme.spacing(1), // 16px en mobile
+        paddingBottom: 0,
+        [theme.breakpoints.up('sm')]: { // Aplicar desde 600px en adelante
+          padding: theme.spacing(4), // 32px en desktop
+        }
+      }
+    }
+  })
 });
+
+

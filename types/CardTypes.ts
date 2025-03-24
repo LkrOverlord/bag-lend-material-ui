@@ -2,7 +2,7 @@ import type { SxProps, Theme } from "@mui/material"
 
 // Base types for all cards
 export type CardVariant = "vertical" | "horizontal"
-export type CardType = "landing" | "listing" | "rental"
+export type CardType = "landing" | "listing" | "rental" | "favorite";
 export type CardStatus = "pending" | "active" | "paused"
 
 // Menu item type
