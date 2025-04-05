@@ -2,6 +2,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import ThemeProvider from '@/theme/ThemeProvider';
 import Header from '@/components/layout/Header';
 import { plusJakarta, rubik } from '@/theme/fonts';
+import Footer from '@/components/layout/Footer';
 
 export const metadata = {
   title: 'Next.js con Material UI',
@@ -18,8 +19,8 @@ export default function RootLayout({
       <body>
         <AppRouterCacheProvider>
             <ThemeProvider>
-              <Header />
               {children}
+              <Footer />
             </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
