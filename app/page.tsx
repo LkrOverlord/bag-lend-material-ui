@@ -4,10 +4,13 @@ import { Container, Typography, Box, useMediaQuery, useTheme } from "@mui/materi
 import Grid from "@mui/material/Grid2"
 import Product1Hardcode from "@/public/assets/HarcodeProducts/Product-1-Harcode.svg"
 import HeroSection from "@/components/features/landing/HeroSection"
+import { useState } from "react"
+import { CardType } from "@/types/CardTypes"
 
 export default function ExamplesPage() {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
+  const [cardType, setCardType] = useState<CardType>("landing")
 
   // Datos corregidos con status válido
   const products = Array.from({ length: 20 }, (_, i) => ({
@@ -28,8 +31,6 @@ export default function ExamplesPage() {
   const handlePause = (id: string) => console.log(`Pause product ${id}`)
   const handleDelete = (id: string) => console.log(`Delete product ${id}`)
   const handleReport = (id: string) => console.log(`Report problem for product ${id}`)
-
-  const cardType = "favorite"
 
   return (
     <Box sx={{ overflowX: "hidden" }}>
@@ -93,7 +94,7 @@ export default function ExamplesPage() {
               }}
             >
               {products.map((product) => (
-                <Grid size={{ xs: cardType === "favorite" ? 12: 6, sm: 6, md: 4, lg: 3 }} key={`landing-${product.id}`}>
+                <Grid size={{ xs: cardType == "favorite" ? 12: 6, sm: 6, md: 4, lg: 3 }} key={`landing-${product.id}`}>
                   <ProductCard
                     productId={product.id}
                     id={product.id}

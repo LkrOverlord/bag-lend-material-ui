@@ -225,11 +225,11 @@ export default function Header() {
       }}
     >
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           {/* Logo - Desktop */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Image src={LogoSvg} alt="logo" />
-          </Box>
+          </Box> */}
 
           {/* Menu - Mobile */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -272,9 +272,9 @@ export default function Header() {
           </Box>
 
           {/* Logo - Mobile */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <Image src={LogoSvg} alt="logo" />
-          </Box>
+          </Box> */}
 
           {/* Menu - Desktop */}
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

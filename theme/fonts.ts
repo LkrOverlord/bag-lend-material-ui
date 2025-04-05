@@ -1,4 +1,3 @@
-// src/theme/fonts.ts
 import { Rubik, Plus_Jakarta_Sans } from 'next/font/google';
 
 export const rubik = Rubik({

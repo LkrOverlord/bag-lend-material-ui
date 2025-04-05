@@ -1,4 +1,4 @@
-// src/theme/theme.ts
+
 import { PaletteMode } from '@mui/material';
 import { getButtonOverrides } from './button';
 import { getCardOverrides } from './card';
