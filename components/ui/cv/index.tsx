@@ -188,14 +188,32 @@ const CVComponent: React.FC = () => {
             gap: 3
           }}>
             <Box sx={{ textAlign: "center" }}>
-              <Avatar
-                src="/tu-imagen.jpg" // Reemplazar con la ruta correcta
+              {/* <Avatar
+                src="/assets/fotoPerfilLaboral2.jpg"
                 sx={{
                   width: 100,
                   height: 100,
                   mx: "auto",
                   mb: 2,
                   border: '2px solid white'
+                }}
+              /> */}
+              <Avatar
+                src="/assets/fotoPerfilLaboral2.jpg"
+                sx={{
+                  width: 100,
+                  height: 100,
+                  mx: "auto",
+                  mb: 2,
+                  border: '2px solid white',
+                  overflow: 'hidden',
+                  '& img': {
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',    // Fuerza a que la imagen cubra todo el espacio
+                    objectPosition: '45% 50%', // Ajusta posición horizontal (60% = más a la derecha)
+                    transform: 'scale(1.1) translateX(5%)', // Zoom + desplazamiento
+                  }
                 }}
               />
               <Typography variant="h5" fontWeight="bold">Willams Meneses</Typography>
