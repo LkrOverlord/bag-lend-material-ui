@@ -577,6 +577,7 @@ const CVComponent: React.FC = () => {
           }
         },
       })
+      //test commit
 
       // Crear PDF con dimensiones A4
       const imgWidth = 210 // A4 width in mm
