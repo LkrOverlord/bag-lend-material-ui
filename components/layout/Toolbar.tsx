@@ -1,6 +1,6 @@
 "use client"
 import { usePathname, useRouter } from "next/navigation"
-import { AppBar, Toolbar as MuiToolbar, Typography, IconButton, Button, useTheme } from "@mui/material"
+import { AppBar, Toolbar as MuiToolbar, Typography, IconButton, Button, useTheme, Box } from "@mui/material"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import AddIcon from "@mui/icons-material/Add"
 
@@ -58,29 +58,31 @@ const Toolbar = () => {
           minHeight: "56px",
         }}
       >
-        {/* Back Button */}
-        <IconButton
-          edge="start"
-          onClick={handleBack}
-          sx={{
-            color: theme.palette.text.primary,
-          }}
-        >
-          <ArrowBackIcon />
-        </IconButton>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "start", width:"100%", gap: "20px" }}>
+          {/* Back Button */}
+          <IconButton
+            edge="start"
+            onClick={handleBack}
+            sx={{
+              color: theme.palette.text.primary,
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
 
-        {/* Title */}
-        <Typography
-          variant="subtitle1"
-          component="div"
-          sx={{
-            fontWeight: 600,
-            flexGrow: 1,
-            textAlign: "center",
-          }}
-        >
-          {getTitle()}
-        </Typography>
+          {/* Title */}
+          <Typography
+            variant="subtitle1"
+            component="div"
+            sx={{
+              fontWeight: 600,
+              textAlign: "center",
+            }}
+          >
+            {getTitle()}
+          </Typography>
+        </Box>
+
 
         {/* Publish Button - only shown for my-listings */}
         <div style={{ minWidth: "80px", display: "flex", justifyContent: "flex-end" }}>
@@ -90,21 +92,6 @@ const Toolbar = () => {
               color="primary"
               startIcon={<AddIcon />}
               onClick={handlePublish}
-              sx={{
-                textTransform: "none",
-                fontWeight: 600,
-                borderRadius: "8px",
-                boxShadow: isDarkMode
-                  ? "none"
-                  : "0px 2px 4px -1px rgba(0,0,0,0.07), 0px 4px 5px 0px rgba(0,0,0,0.05), 0px 1px 10px 0px rgba(0,0,0,0.03)",
-                "&:hover": {
-                  boxShadow: isDarkMode
-                    ? "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)"
-                    : "0px 3px 5px -1px rgba(0,0,0,0.1), 0px 6px 10px 0px rgba(0,0,0,0.08), 0px 1px 18px 0px rgba(0,0,0,0.05)",
-                  backgroundColor: isDarkMode ? "#42a5f5" : "#1565c0",
-                },
-                padding: "6px 16px",
-              }}
             >
               Publish
             </Button>
