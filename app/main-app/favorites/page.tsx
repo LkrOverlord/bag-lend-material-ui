@@ -1,6 +1,6 @@
 "use client"
 import ProductCard from '@/components/ui/Cards/ProductCard'
-import { Box, Container, Typography, useTheme } from '@mui/material'
+import { Box, Container, useTheme } from '@mui/material'
 import React, { useState } from 'react'
 import Grid from "@mui/material/Grid2"
 import { CardType } from '@/types/CardTypes'
