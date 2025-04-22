@@ -29,7 +29,6 @@ export default function Header() {
   const { mode, toggleColorMode } = useThemeContext();
   const theme = useTheme(); // Usar el tema de Material-UI
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [selectedPage, setSelectedPage] = useState<string | null>(null);
 
   // Detecta si el usuario ha hecho scroll
   const hasScrolled = useScrollTrigger({
@@ -127,6 +126,7 @@ export default function Header() {
           </div>
         </Toolbar>
       </Container>
+     
     </AppBar>
   );
 }

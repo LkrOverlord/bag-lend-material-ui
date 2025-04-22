@@ -49,7 +49,6 @@ export const typography: TypographyOptions = {
     lineHeight: 1.8, // 180% (36px)
     fontFeatureSettings: "'liga' off",
   },
-
   // Body text standard
   body1: {
     fontFamily: 'var(--font-jakarta), sans-serif',
