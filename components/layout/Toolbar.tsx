@@ -1,10 +1,14 @@
 "use client"
 import { usePathname, useRouter } from "next/navigation"
-import { AppBar, Toolbar as MuiToolbar, Typography, IconButton, Button, useTheme, Box } from "@mui/material"
+import { AppBar, Toolbar as MuiToolbar, Typography, IconButton, Button, useTheme, Box, Theme, SxProps } from "@mui/material"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import AddIcon from "@mui/icons-material/Add"
 
-const Toolbar = () => {
+interface ToolbarProps {
+  sx?: SxProps<Theme> // 1. Definir prop para estilos opcionales
+}
+
+const Toolbar = ({ sx }: ToolbarProps) => {
   const router = useRouter()
   const pathname = usePathname()
   const theme = useTheme()
@@ -48,6 +52,7 @@ const Toolbar = () => {
         backgroundColor: theme.palette.background.paper,
         color: theme.palette.text.primary,
         borderBottom: `1px solid ${theme.palette.grey[isDarkMode ? 200 : 300]}`,
+        ...sx,
       }}
     >
       <MuiToolbar

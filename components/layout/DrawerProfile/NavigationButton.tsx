@@ -23,14 +23,17 @@ const NavigationButton = ({ label, icon, onClick, isLast }: NavigationButtonProp
                     },
                     '& .MuiListItemIcon-root': {
                         minWidth: '40px',
-                    }
+                    },
+                    border: "1px solid",
+                    borderColor: theme.palette.grey[200],
+
                 }}
             >
                 <Box sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    width:"100%"
+                    width: "100%"
 
                 }}>
                     <Box sx={{
@@ -39,7 +42,7 @@ const NavigationButton = ({ label, icon, onClick, isLast }: NavigationButtonProp
                         width: "fit-content",
 
                     }}>
-                        <ListItemIcon sx={{ color:theme.palette.primary.main  }}>
+                        <ListItemIcon sx={{ color: theme.palette.primary.main }}>
                             {icon}
                         </ListItemIcon>
                         <ListItemText
@@ -50,7 +53,7 @@ const NavigationButton = ({ label, icon, onClick, isLast }: NavigationButtonProp
                             slotProps={{
                                 primary: {
                                     variant: 'h6',
-                                    color:theme.palette.primary.main,
+                                    color: theme.palette.primary.main,
                                     component: 'span',
                                     fontSize: '16px',
                                 },

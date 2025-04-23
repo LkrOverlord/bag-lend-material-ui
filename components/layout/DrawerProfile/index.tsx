@@ -8,6 +8,7 @@ import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalance
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import { useRouter } from 'next/navigation';
 
 interface RightDrawerProps {
     open: boolean;
@@ -19,12 +20,13 @@ interface RightDrawerProps {
 }
 
 const RightDrawer = ({ open, onClose, user }: RightDrawerProps) => {
+    const router = useRouter();
     const navigationItems = [
         { label: 'Notifications', icon: <NotificationsNoneIcon />, onClick: () => console.log('Notifications clicked') },
         { label: 'Inbox', icon: <ForumOutlinedIcon />, onClick: () => console.log('Inbox clicked') },
-        { label: 'Favorites', icon: <FavoriteBorderOutlinedIcon />, onClick: () => console.log('Favorites clicked') },
+        { label: 'Favorites', icon: <FavoriteBorderOutlinedIcon />, onClick: () => router.push('/main-app/favorites') },
         { label: 'Wallet', icon: <AccountBalanceWalletOutlinedIcon />, onClick: () => console.log('Wallet clicked') },
-        { label: 'My Listings', icon: <SellOutlinedIcon />, onClick: () => console.log('Listings clicked') },
+        { label: 'My Listings', icon: <SellOutlinedIcon />, onClick: () => router.push('/main-app/my-listings') },
         { label: 'My Rentals', icon: <ShoppingBagOutlinedIcon />, onClick: () => console.log('Rentals clicked') },
         { label: 'Log Out', icon: <LogoutOutlinedIcon />, onClick: () => console.log('Logout clicked') },
     ];
