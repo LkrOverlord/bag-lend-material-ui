@@ -6,7 +6,6 @@ import {
   Button,
   Typography,
   Paper,
-  Avatar,
   LinearProgress,
   Chip,
   Link,
@@ -70,6 +69,11 @@ const BulletPoint = styled(FiberManualRecord)({
   fontSize: 8,
   color: theme.palette.primary.main,
 })
+
+// Constantes para dimensiones A4 en píxeles (a 96 DPI)
+// A4 es 210mm x 297mm, que a 96 DPI es aproximadamente 794px x 1123px
+const A4_WIDTH_PX = 794
+const A4_HEIGHT_PX = 1123
 
 const CVComponent: React.FC = () => {
   const cvRef = useRef<HTMLDivElement>(null)
@@ -143,7 +147,7 @@ const CVComponent: React.FC = () => {
 
       // Configuración mejorada para html2canvas
       const canvas = await html2canvas(cvRef.current, {
-        scale: 1.5, // Mayor escala para mejor calidad
+        scale: 2, // Mayor escala para mejor calidad
         useCORS: true,
         logging: false,
         backgroundColor: "#ffffff",
@@ -154,22 +158,11 @@ const CVComponent: React.FC = () => {
           const avatarImg = clonedDoc.querySelector("img")
           if (avatarImg) {
             avatarImg.crossOrigin = "anonymous"
-            // Forzar el estilo correcto en el clon
-            const avatarElement = clonedDoc.querySelector(".MuiAvatar-img")
-            if (avatarElement) {
-              avatarElement.setAttribute(
-                "style",
-                "width: 100%; height: 100%; object-fit: cover; object-position: 45% 50%; transform: scale(1.1) translateX(5%);",
-              )
-            }
           }
         },
       })
-      //test commit
 
-      // Crear PDF con dimensiones A4
-      const imgWidth = 210 // A4 width in mm
-      const imgHeight = 297 // A4 height in mm
+      // Crear PDF con dimensiones A4 exactas
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "mm",
@@ -177,28 +170,12 @@ const CVComponent: React.FC = () => {
         compress: true,
       })
 
-      // Calcular la relación de aspecto para mantener las proporciones
-      const canvasWidth = canvas.width
-      const canvasHeight = canvas.height
-      const ratio = Math.min(imgWidth / canvasWidth, imgHeight / canvasHeight)
+      // Dimensiones A4 en mm
+      const pdfWidth = 210
+      const pdfHeight = 297
 
-      // Calcular dimensiones finales manteniendo la relación de aspecto
-      const finalWidth = canvasWidth * ratio
-      const finalHeight = canvasHeight * ratio
-
-      // Centrar la imagen en la página
-      const xOffset = (imgWidth - finalWidth) / 2
-      const yOffset = (imgHeight - finalHeight) / 2
-
-      // Añadir la imagen al PDF con las dimensiones calculadas
-      pdf.addImage(
-        canvas.toDataURL("image/png", 1.0), // Máxima calidad
-        "PNG",
-        xOffset,
-        yOffset,
-        finalWidth,
-        finalHeight,
-      )
+      // Añadir la imagen al PDF manteniendo las proporciones exactas de A4
+      pdf.addImage(canvas.toDataURL("image/png", 1.0), "PNG", 0, 0, pdfWidth, pdfHeight)
 
       pdf.save("CV-Desarrollador-Frontend.pdf")
       document.body.removeChild(loadingMessage)
@@ -220,15 +197,19 @@ const CVComponent: React.FC = () => {
           Descargar PDF
         </Button>
 
+        {/* Contenedor con dimensiones fijas de A4 */}
         <Paper
           ref={cvRef}
           elevation={3}
           sx={{
-            width: "210mm",
-            height: "297mm",
+            width: `${A4_WIDTH_PX}px`,
+            height: `${A4_HEIGHT_PX}px`,
             display: "flex",
             flexDirection: "row",
             overflow: "hidden",
+            // Aseguramos que mantenga las proporciones exactas
+            maxWidth: "100%",
+            boxSizing: "border-box",
           }}
         >
           {/* Sidebar */}
@@ -241,27 +222,37 @@ const CVComponent: React.FC = () => {
               display: "flex",
               flexDirection: "column",
               gap: 3,
+              overflow: "auto",
             }}
           >
             <Box sx={{ textAlign: "center" }}>
-              <Avatar
-                src="/assets/fotoPerfilLaboral2.jpg"
+              <Box
                 sx={{
-                  width: 100,
-                  height: 95,
+                  width: 130,
+                  height: 130,
                   mx: "auto",
                   mb: 2,
+                  borderRadius: "50%",
                   border: "2px solid white",
                   overflow: "hidden",
-                  "& img": {
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "con",
-                    objectPosition: "45% 50%",
-                    transform: "scale(0.8) translateX(5%)",
-                  },
+                  position: "relative",
+                  backgroundColor: "primary.main", // Mismo color que el fondo
                 }}
-              />
+              >
+                <Box
+                  component="img"
+                  src="/assets/fotoPerfilLaboral2.jpg"
+                  sx={{
+                    position: "absolute",
+                    width: "111%", // Aumentamos más el tamaño para cubrir todo el círculo
+                    height: "auto", // Mantenemos la proporción de la imagen
+                    top: "-40%", // Ajustamos verticalmente para centrar la cara
+                    left: "50%",
+                    transform: "translateX(-45%)", // Centramos horizontalmente
+                    objectFit: "cover",
+                  }}
+                />
+              </Box>
               <Typography variant="h5" fontWeight="bold">
                 Willams Meneses
               </Typography>
@@ -376,6 +367,7 @@ const CVComponent: React.FC = () => {
               display: "flex",
               flexDirection: "column",
               gap: 3,
+              overflow: "auto",
             }}
           >
             <Box>
@@ -474,4 +466,3 @@ const CVComponent: React.FC = () => {
 }
 
 export default CVComponent
-
