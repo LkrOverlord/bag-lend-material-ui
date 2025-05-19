@@ -99,9 +99,36 @@ const BaseCard = ({
           {showFavorite && <FavoriteButton id={id} initialFavorite={isFavorite} onToggle={onFavoriteToggle} />}
 
           {/* Tag Display - only show if there are tags */}
-          {tags.length > 0 && tags[0] && cardType !== "favorite" && ( // Cambio aquí
+          {tags.length > 0 && tags[0] && cardType == "favorite" && ( // Cambio aquí
             <TagDisplay tag={tags[0]} />
           )}
+
+          {/* {showMenu && menuItems.length > 0 && (
+            <Box sx={{ display: "flex", justifyContent: "flex-end", p: 1, }}>
+              <CardMenu menuItems={menuItems} />
+            </Box>
+          )} */}
+
+          {showMenu && menuItems.length > 0 && (
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 8,
+                right: 8,
+                bgcolor: 'rgba(255, 255, 255, 0.5)',
+                borderRadius: '50%',
+                backdropFilter: 'blur(10px)',
+                width: 32,
+                height: 32,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <CardMenu menuItems={menuItems} />
+            </Box>
+          )}
+
         </Box>
       </Box>
 
@@ -113,12 +140,6 @@ const BaseCard = ({
           position: "relative",
         }}
       >
-        {/* Menu */}
-        {showMenu && menuItems.length > 0 && (
-          <Box sx={{ display: "flex", justifyContent: "flex-end", p: 1 }}>
-            <CardMenu menuItems={menuItems} />
-          </Box>
-        )}
 
         <CardContent sx={{
           flexGrow: 1,  // Padding vertical reducido en mobile
@@ -154,7 +175,7 @@ const BaseCard = ({
             <Box sx={{ display: "flex", flexDirection: "column", gap: { xs: 0, sm: 1 }, flex: 1, justifyContent: "center", margin: 0, padding: 0 }}>
 
               {/* Location - Using subtitle2 for the semi-bold medium text style */}
-              {showLocation && location && (
+              {showLocation && location && cardType != "listing" && (
                 <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
                   <LocationOnIcon fontSize="small" color="action" sx={{ mr: 0.5 }} />
                   <Typography
@@ -171,7 +192,7 @@ const BaseCard = ({
               )}
 
               {/* Rating - Using subtitle2 for the semi-bold medium text style */}
-              {showRating && rating !== undefined && (
+              {showRating && rating !== undefined && cardType != "listing" && (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Rating value={rating} precision={0.5} size="small" readOnly />
                   <Typography
@@ -186,7 +207,15 @@ const BaseCard = ({
                 </Box>
               )}
 
+              {cardType === "listing" && tags.length > 0 && tags[0] && (
+                <Box sx={{ mb: 1 }}>
+                  <TagDisplay tag={tags[0]} />
+                </Box>
+              )}
+
             </Box>
+
+
 
             {/* Price - Using subtitle1 for the semi-bold large text style */}
             <Typography

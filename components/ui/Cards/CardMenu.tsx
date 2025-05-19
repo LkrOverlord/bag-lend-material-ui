@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { Box, IconButton, Menu, MenuItem } from "@mui/material"
-import { MoreVert as MoreVertIcon } from "@mui/icons-material"
+import {  MoreHoriz } from "@mui/icons-material"
 import { CardMenuItem } from "@/types/CardTypes"
 
 interface CardMenuProps {
@@ -31,9 +31,9 @@ export const CardMenu = ({ menuItems }: CardMenuProps) => {
   }
 
   return (
-    <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+    <Box >
       <IconButton onClick={handleMenuClick} size="small">
-        <MoreVertIcon />
+        <MoreHoriz />
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
         {menuItems.map((item, index) => (
