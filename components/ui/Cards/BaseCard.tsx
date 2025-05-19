@@ -144,7 +144,7 @@ const BaseCard = ({
               {title}
             </Typography>
 
-            {cardType === "favorite" && tags.length > 0 && tags[0] && (
+            {cardType === "rental" && tags.length > 0 && tags[0] && (
               <Box sx={{ mb: 1 }}>
                 <TagDisplay tag={tags[0]} />
               </Box>
