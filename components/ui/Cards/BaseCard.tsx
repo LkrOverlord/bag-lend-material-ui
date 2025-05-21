@@ -1,90 +1,85 @@
-"use client"
+"use client";
 
-import { Box, Card, CardContent, Rating, Typography, useMediaQuery, useTheme } from "@mui/material"
-import { LocationOn as LocationOnIcon } from "@mui/icons-material"
+import { Box, Card, CardContent, Rating, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { LocationOn as LocationOnIcon } from "@mui/icons-material";
+import Image from "next/image";
 
-import { BaseCardProps, CardType } from "@/types/CardTypes"
-import { FavoriteButton } from "./FavoriteButton"
-import { TagDisplay } from "./TagDisplay"
-import { CardMenu } from "./CardMenu"
-import { height } from "@mui/system"
 
-interface EnhancedBaseCardProps extends BaseCardProps {
-  cardType: CardType
-}
+import { FavoriteButton } from "./FavoriteButton";
+import { TagDisplay } from "./TagDisplay";
+import { CardMenu } from "./CardMenu";
+import { BaseCardProps } from "@/types/Product";
 
 const BaseCard = ({
-  id,
-  title,
-  image,
-  price,
-  currency = "USD",
-  period = "day",
-  location,
-  rating,
-  tags = [],
-  status,
-  isFavorite = false,
-  onFavoriteToggle,
-  onClick,
+  product,
   menuItems = [],
   variant = "vertical",
   showRating = true,
   showLocation = true,
-  showFavorite = true,
   showMenu = true,
   imageHeight = 200,
   sx = {},
   cardType,
-}: EnhancedBaseCardProps) => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
+  onFavoriteToggle,
+  onClick,
+}: BaseCardProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isLanding = cardType === "landing";
+  
+  const {
+    id, 
+    title, 
+    image, 
+    price, 
+    currency = "USD", 
+    period = "day", 
+    location, 
+    rating, 
+    tags = [], 
+    isFavorite = false
+  } = product;
 
-  // Nueva lógica simplificada
-  const getFlexDirection = () => {
-    if (isLanding) return "column"; // Siempre vertical
-    return isMobile ? "row" : "column"; // Horizontal en mobile para no-landing
-  };
-
+  // Direction based on card type and screen size
+  const flexDirection = isLanding ? "column" : (isMobile ? "row" : "column");
+  
+  // Choose text size based on device and card type
   const getTextSize = (mobileSize: string, desktopSize: string) =>
     isLanding ? desktopSize : { xs: mobileSize, sm: desktopSize };
 
-  // Image handling for both string and object formats
-  const imageUrl = typeof image === "string" ? image : image.src
+  // Image URL handling
+  const imageUrl = typeof image === "string" ? image : image.src;
+
+  // Card heights for different scenarios
+  const cardHeight = {
+    xs: cardType === "favorite" ? "auto" : 291,
+    sm: isLanding ? 550 : 428
+  };
 
   return (
     <Card
       sx={{
         display: "flex",
-        flexDirection: getFlexDirection(),
-        // height: cardType === "favorite" && isMobile ? 120 :
-        height: {
-          xs: cardType === "favorite" ? "auto" : 291, // Altura automática para favoritos
-          sm: isLanding ? 550 : 428 // Altura personalizada para desktop
-        },
-        minHeight: cardType === "favorite" ? 140 : "unset", // Altura mínima para mobile
-        // variant === "vertical" ? 428 : "auto",
-        [theme.breakpoints.down("sm")]: {
-          width: "100%",
-          ...(!isLanding && { height: 120 })
-        },
+        flexDirection,
+        height: cardHeight,
+        minHeight: cardType === "favorite" ? 140 : "unset",
+        width: "100%",
+        cursor: onClick ? "pointer" : "default",
+        ...(isMobile && !isLanding && { height: 120 }),
         ...sx,
       }}
       onClick={onClick}
     >
+      {/* Image Section */}
       <Box
         sx={{
           width: !isLanding && isMobile ? 120 : "100%",
           height: isLanding ? 240 : isMobile ? 140 : 240,
-
           backgroundImage: `url(${imageUrl})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           borderTopLeftRadius: variant === "vertical" ? "12px" : 0,
           borderTopRightRadius: variant === "vertical" ? "12px" : 0,
-          display: "flex",
-          flexDirection: "column",
           position: "relative",
         }}
       >
@@ -96,19 +91,20 @@ const BaseCard = ({
           height: "auto"
         }}>
           {/* Favorite Button */}
-          {showFavorite && <FavoriteButton id={id} initialFavorite={isFavorite} onToggle={onFavoriteToggle} />}
+          {cardType === "favorite" && (
+            <FavoriteButton 
+              id={id} 
+              initialFavorite={isFavorite} 
+              onToggle={() => onFavoriteToggle?.(id)} 
+            />
+          )}
 
-          {/* Tag Display - only show if there are tags */}
-          {tags.length > 0 && tags[0] && cardType == "favorite" && ( // Cambio aquí
+          {/* Tag Display */}
+          {tags.length > 0 && tags[0] && cardType === "favorite" && (
             <TagDisplay tag={tags[0]} />
           )}
 
-          {/* {showMenu && menuItems.length > 0 && (
-            <Box sx={{ display: "flex", justifyContent: "flex-end", p: 1, }}>
-              <CardMenu menuItems={menuItems} />
-            </Box>
-          )} */}
-
+          {/* Menu */}
           {showMenu && menuItems.length > 0 && (
             <Box
               sx={{
@@ -128,10 +124,10 @@ const BaseCard = ({
               <CardMenu menuItems={menuItems} />
             </Box>
           )}
-
         </Box>
       </Box>
 
+      {/* Content Section */}
       <Box
         sx={{
           display: "flex",
@@ -140,18 +136,21 @@ const BaseCard = ({
           position: "relative",
         }}
       >
-
         <CardContent sx={{
-          flexGrow: 1,  // Padding vertical reducido en mobile
+          flexGrow: 1,
           px: { xs: 1, sm: 2 },
           padding: { xs: 1, sm: 4 },
           '&:last-child': {
             paddingBottom: { xs: 1, sm: 1 }
           }
         }}>
-          <Box sx={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
-
-            {/* Title/Name - Using variant h6 that matches the style specs */}
+          <Box sx={{ 
+            display: "flex", 
+            flexDirection: "column", 
+            height: "100%", 
+            justifyContent: "space-between" 
+          }}>
+            {/* Title */}
             <Typography
               variant="h6"
               component="h2"
@@ -165,17 +164,25 @@ const BaseCard = ({
               {title}
             </Typography>
 
+            {/* Tags for rental type */}
             {cardType === "rental" && tags.length > 0 && tags[0] && (
               <Box sx={{ mb: 1 }}>
                 <TagDisplay tag={tags[0]} />
               </Box>
             )}
 
-            {/* Content section (location and rating) */}
-            <Box sx={{ display: "flex", flexDirection: "column", gap: { xs: 0, sm: 1 }, flex: 1, justifyContent: "center", margin: 0, padding: 0 }}>
-
-              {/* Location - Using subtitle2 for the semi-bold medium text style */}
-              {showLocation && location && cardType != "listing" && (
+            {/* Middle Content */}
+            <Box sx={{ 
+              display: "flex", 
+              flexDirection: "column", 
+              gap: { xs: 0, sm: 1 }, 
+              flex: 1, 
+              justifyContent: "center", 
+              margin: 0, 
+              padding: 0 
+            }}>
+              {/* Location */}
+              {showLocation && location && cardType !== "listing" && (
                 <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
                   <LocationOnIcon fontSize="small" color="action" sx={{ mr: 0.5 }} />
                   <Typography
@@ -191,8 +198,8 @@ const BaseCard = ({
                 </Box>
               )}
 
-              {/* Rating - Using subtitle2 for the semi-bold medium text style */}
-              {showRating && rating !== undefined && cardType != "listing" && (
+              {/* Rating */}
+              {showRating && rating !== undefined && cardType !== "listing" && (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Rating value={rating} precision={0.5} size="small" readOnly />
                   <Typography
@@ -207,17 +214,15 @@ const BaseCard = ({
                 </Box>
               )}
 
+              {/* Tags for listing type */}
               {cardType === "listing" && tags.length > 0 && tags[0] && (
                 <Box sx={{ mb: 1 }}>
                   <TagDisplay tag={tags[0]} />
                 </Box>
               )}
-
             </Box>
 
-
-
-            {/* Price - Using subtitle1 for the semi-bold large text style */}
+            {/* Price */}
             <Typography
               variant="subtitle1"
               component="div"
@@ -230,10 +235,9 @@ const BaseCard = ({
             </Typography>
           </Box>
         </CardContent>
-
       </Box>
     </Card>
-  )
-}
+  );
+};
 
-export default BaseCard
+export default BaseCard;

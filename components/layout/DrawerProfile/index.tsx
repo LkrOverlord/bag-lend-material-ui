@@ -27,7 +27,7 @@ const RightDrawer = ({ open, onClose, user }: RightDrawerProps) => {
         { label: 'Favorites', icon: <FavoriteBorderOutlinedIcon />, onClick: () => router.push('/main-app/favorites') },
         { label: 'Wallet', icon: <AccountBalanceWalletOutlinedIcon />, onClick: () => console.log('Wallet clicked') },
         { label: 'My Listings', icon: <SellOutlinedIcon />, onClick: () => router.push('/main-app/my-listings') },
-        { label: 'My Rentals', icon: <ShoppingBagOutlinedIcon />, onClick: () => console.log('Rentals clicked') },
+        { label: 'My Rentals', icon: <ShoppingBagOutlinedIcon />, onClick: () => router.push('/main-app/my-rentals') },
         { label: 'Log Out', icon: <LogoutOutlinedIcon />, onClick: () => console.log('Logout clicked') },
     ];
 
