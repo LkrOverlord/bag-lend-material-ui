@@ -4,7 +4,6 @@ import { Box, Card, CardContent, Rating, Typography, useMediaQuery, useTheme } f
 import { LocationOn as LocationOnIcon } from "@mui/icons-material";
 import Image from "next/image";
 
-
 import { FavoriteButton } from "./FavoriteButton";
 import { TagDisplay } from "./TagDisplay";
 import { CardMenu } from "./CardMenu";
@@ -26,6 +25,7 @@ const BaseCard = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isLanding = cardType === "landing";
+  const isRentalDrawer = cardType === "rentalDrawer";
   
   const {
     id, 
@@ -41,7 +41,10 @@ const BaseCard = ({
   } = product;
 
   // Direction based on card type and screen size
-  const flexDirection = isLanding ? "column" : (isMobile ? "row" : "column");
+  const getFlexDirection = () => {
+    if (isRentalDrawer) return "row"; // Always horizontal for rentalDrawer
+    return isLanding ? "column" : (isMobile ? "row" : "column");
+  };
   
   // Choose text size based on device and card type
   const getTextSize = (mobileSize: string, desktopSize: string) =>
@@ -51,21 +54,42 @@ const BaseCard = ({
   const imageUrl = typeof image === "string" ? image : image.src;
 
   // Card heights for different scenarios
-  const cardHeight = {
-    xs: cardType === "favorite" ? "auto" : 291,
-    sm: isLanding ? 550 : 428
+  const getCardHeight = () => {
+    if (isRentalDrawer) {
+      return { xs: "auto", sm: "auto" }; // Auto height for rentalDrawer
+    }
+    return {
+      xs: cardType === "favorite" ? "auto" : 291,
+      sm: isLanding ? 550 : 428
+    };
   };
+
+  // Image dimensions for rentalDrawer
+  const getImageDimensions = () => {
+    if (isRentalDrawer) {
+      return {
+        width: isMobile ? 100 : 120, // Fixed width for horizontal layout
+        height: isMobile ? 80 : 100
+      };
+    }
+    return {
+      width: !isLanding && isMobile ? 120 : "100%",
+      height: isLanding ? 240 : isMobile ? 140 : 240
+    };
+  };
+
+  const imageDimensions = getImageDimensions();
 
   return (
     <Card
       sx={{
         display: "flex",
-        flexDirection,
-        height: cardHeight,
-        minHeight: cardType === "favorite" ? 140 : "unset",
+        flexDirection: getFlexDirection(),
+        height: getCardHeight(),
+        minHeight: cardType === "favorite" ? 140 : isRentalDrawer ? 80 : "unset",
         width: "100%",
         cursor: onClick ? "pointer" : "default",
-        ...(isMobile && !isLanding && { height: 120 }),
+        ...(isMobile && !isLanding && !isRentalDrawer && { height: 120 }),
         ...sx,
       }}
       onClick={onClick}
@@ -73,58 +97,62 @@ const BaseCard = ({
       {/* Image Section */}
       <Box
         sx={{
-          width: !isLanding && isMobile ? 120 : "100%",
-          height: isLanding ? 240 : isMobile ? 140 : 240,
+          width: imageDimensions.width,
+          height: imageDimensions.height,
           backgroundImage: `url(${imageUrl})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           borderTopLeftRadius: variant === "vertical" ? "12px" : 0,
           borderTopRightRadius: variant === "vertical" ? "12px" : 0,
+          borderBottomLeftRadius: isRentalDrawer && isMobile ? "12px" : 0,
           position: "relative",
+          flexShrink: 0, // Prevent image from shrinking
         }}
       >
-        {/* Top section with favorite button and tag */}
-        <Box sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          padding: 1,
-          height: "auto"
-        }}>
-          {/* Favorite Button */}
-          {cardType === "favorite" && (
-            <FavoriteButton 
-              id={id} 
-              initialFavorite={isFavorite} 
-              onToggle={() => onFavoriteToggle?.(id)} 
-            />
-          )}
+        {/* Top section with favorite button and tag - Only show for non-rentalDrawer */}
+        {!isRentalDrawer && (
+          <Box sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: 1,
+            height: "auto"
+          }}>
+            {/* Favorite Button */}
+            {cardType === "favorite" && (
+              <FavoriteButton 
+                id={id} 
+                initialFavorite={isFavorite} 
+                onToggle={() => onFavoriteToggle?.(id)} 
+              />
+            )}
 
-          {/* Tag Display */}
-          {tags.length > 0 && tags[0] && cardType === "favorite" && (
-            <TagDisplay tag={tags[0]} />
-          )}
+            {/* Tag Display */}
+            {tags.length > 0 && tags[0] && cardType === "favorite" && (
+              <TagDisplay tag={tags[0]} />
+            )}
 
-          {/* Menu */}
-          {showMenu && menuItems.length > 0 && (
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 8,
-                right: 8,
-                bgcolor: 'rgba(255, 255, 255, 0.5)',
-                borderRadius: '50%',
-                backdropFilter: 'blur(10px)',
-                width: 32,
-                height: 32,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <CardMenu menuItems={menuItems} />
-            </Box>
-          )}
-        </Box>
+            {/* Menu */}
+            {showMenu && menuItems.length > 0 && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  bgcolor: 'rgba(255, 255, 255, 0.5)',
+                  borderRadius: '50%',
+                  backdropFilter: 'blur(10px)',
+                  width: 32,
+                  height: 32,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <CardMenu menuItems={menuItems} />
+              </Box>
+            )}
+          </Box>
+        )}
       </Box>
 
       {/* Content Section */}
@@ -134,105 +162,119 @@ const BaseCard = ({
           flexDirection: "column",
           flexGrow: 1,
           position: "relative",
+          minWidth: 0, // Prevent content from overflowing
         }}
       >
         <CardContent sx={{
           flexGrow: 1,
-          px: { xs: 1, sm: 2 },
-          padding: { xs: 1, sm: 4 },
+          px: isRentalDrawer ? { xs: 1, sm: 2 } : { xs: 1, sm: 2 },
+          py: isRentalDrawer ? { xs: 1, sm: 1.5 } : { xs: 1, sm: 4 },
           '&:last-child': {
-            paddingBottom: { xs: 1, sm: 1 }
+            paddingBottom: isRentalDrawer ? { xs: 1, sm: 1.5 } : { xs: 1, sm: 1 }
           }
         }}>
           <Box sx={{ 
             display: "flex", 
             flexDirection: "column", 
             height: "100%", 
-            justifyContent: "space-between" 
+            justifyContent: isRentalDrawer ? "flex-start" : "space-between",
+            gap: isRentalDrawer ? 1 : 0
           }}>
             {/* Title */}
             <Typography
               variant="h6"
               component="h2"
-              noWrap
+              noWrap={!isRentalDrawer} // Allow wrapping for rentalDrawer
               color="text.primary"
               sx={{
-                fontSize: getTextSize("0.875rem", "1.2rem"),
-                fontWeight: isLanding ? 700 : 600
+                fontSize: isRentalDrawer 
+                  ? { xs: "1rem", sm: "1.125rem" }
+                  : getTextSize("0.875rem", "1.2rem"),
+                fontWeight: isLanding ? 700 : isRentalDrawer ? 600 : 600,
+                lineHeight: isRentalDrawer ? 1.3 : "normal",
+                display: isRentalDrawer ? "-webkit-box" : "block",
+                WebkitLineClamp: isRentalDrawer ? 2 : "unset",
+                WebkitBoxOrient: isRentalDrawer ? "vertical" : "unset",
+                overflow: isRentalDrawer ? "hidden" : "visible"
               }}
             >
               {title}
             </Typography>
 
-            {/* Tags for rental type */}
-            {cardType === "rental" && tags.length > 0 && tags[0] && (
-              <Box sx={{ mb: 1 }}>
+            {/* Tags - Show for rentalDrawer and rental types */}
+            {((cardType === "rental" && tags.length > 0 && tags[0]) || 
+              (isRentalDrawer && tags.length > 0 && tags[0])) && (
+              <Box sx={{ mb: isRentalDrawer ? 0 : 1 }}>
                 <TagDisplay tag={tags[0]} />
               </Box>
             )}
 
-            {/* Middle Content */}
-            <Box sx={{ 
-              display: "flex", 
-              flexDirection: "column", 
-              gap: { xs: 0, sm: 1 }, 
-              flex: 1, 
-              justifyContent: "center", 
-              margin: 0, 
-              padding: 0 
-            }}>
-              {/* Location */}
-              {showLocation && location && cardType !== "listing" && (
-                <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
-                  <LocationOnIcon fontSize="small" color="action" sx={{ mr: 0.5 }} />
-                  <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    noWrap
-                    sx={{
-                      fontSize: getTextSize("0.875rem", "1.125rem")
-                    }}
-                  >
-                    {location}
-                  </Typography>
-                </Box>
-              )}
+            {/* Middle Content - Only show for non-rentalDrawer */}
+            {!isRentalDrawer && (
+              <Box sx={{ 
+                display: "flex", 
+                flexDirection: "column", 
+                gap: { xs: 0, sm: 1 }, 
+                flex: 1, 
+                justifyContent: "center", 
+                margin: 0, 
+                padding: 0 
+              }}>
+                {/* Location */}
+                {showLocation && location && cardType !== "listing" && (
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
+                    <LocationOnIcon fontSize="small" color="action" sx={{ mr: 0.5 }} />
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      noWrap
+                      sx={{
+                        fontSize: getTextSize("0.875rem", "1.125rem")
+                      }}
+                    >
+                      {location}
+                    </Typography>
+                  </Box>
+                )}
 
-              {/* Rating */}
-              {showRating && rating !== undefined && cardType !== "listing" && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Rating value={rating} precision={0.5} size="small" readOnly />
-                  <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    sx={{
-                      fontSize: getTextSize("0.875rem", "1.125rem")
-                    }}
-                  >
-                    {rating}
-                  </Typography>
-                </Box>
-              )}
+                {/* Rating */}
+                {showRating && rating !== undefined && cardType !== "listing" && (
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Rating value={rating} precision={0.5} size="small" readOnly />
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      sx={{
+                        fontSize: getTextSize("0.875rem", "1.125rem")
+                      }}
+                    >
+                      {rating}
+                    </Typography>
+                  </Box>
+                )}
 
-              {/* Tags for listing type */}
-              {cardType === "listing" && tags.length > 0 && tags[0] && (
-                <Box sx={{ mb: 1 }}>
-                  <TagDisplay tag={tags[0]} />
-                </Box>
-              )}
-            </Box>
+                {/* Tags for listing type */}
+                {cardType === "listing" && tags.length > 0 && tags[0] && (
+                  <Box sx={{ mb: 1 }}>
+                    <TagDisplay tag={tags[0]} />
+                  </Box>
+                )}
+              </Box>
+            )}
 
-            {/* Price */}
-            <Typography
-              variant="subtitle1"
-              component="div"
-              color="text.primary"
-              sx={{
-                fontSize: getTextSize("0.875rem", "1.125rem")
-              }}
-            >
-              ${price} {currency}/{period}
-            </Typography>
+            {/* Price - Only show for non-rentalDrawer */}
+            {!isRentalDrawer && (
+              <Typography
+                variant="subtitle1"
+                component="div"
+                color="text.primary"
+                sx={{
+                  fontSize: getTextSize("0.875rem", "1.125rem")
+                }}
+              >
+                ${price} {currency}/{period}
+              </Typography>
+            )}
           </Box>
         </CardContent>
       </Box>

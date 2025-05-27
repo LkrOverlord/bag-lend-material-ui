@@ -8,6 +8,7 @@ import ProductGridSection from '@/components/ui/Lists/ProductGridSection';
 import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
 import AvatarHarcode from '@/public/assets/AvatarRental.png'
 import SimpleTable from '@/components/ui/Tables/SimpleTable';
+import CheckoutPage from '@/components/ui/Drawers/CheckoutPage';
 
 const MyRentalsPage = () => {
   const theme = useTheme();
@@ -63,11 +64,6 @@ const MyRentalsPage = () => {
           onReport={handleReport}
         />
       </Container>
-      <div style={{
-        margin: "20px"
-      }}>
-        <SimpleTable items={items} />
-      </div>
 
     </Box>
   );

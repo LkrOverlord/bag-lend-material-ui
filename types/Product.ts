@@ -2,7 +2,7 @@
 import { StaticImageData } from "next/image";
 import { MenuItem } from "./MenuItem";
 
-export type CardType = "landing" | "listing" | "rental" | "favorite";
+export type CardType = "landing" | "listing" | "rental" | "favorite" | "rentalDrawer";
 
 export type ProductStatus = "active" | "pending" | "paused";
 
@@ -42,4 +42,5 @@ export interface ProductCardProps {
   onPause?: (id: string) => void;
   onDelete?: (id: string) => void;
   onReport?: (id: string) => void;
+  onClick?: () => void;
 }

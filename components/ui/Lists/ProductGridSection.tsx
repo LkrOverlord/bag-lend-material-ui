@@ -4,6 +4,8 @@ import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Grid from "@mui/material/Grid2";
 import ProductCard from '@/components/ui/Cards/ProductCard';
 import { CardType, Product } from '@/types/Product';
+import { useState } from 'react';
+import DrawerRental from '@/components/features/rentals/DrawerRental';
 
 interface ProductGridSectionProps {
   title?: string;
@@ -31,6 +33,11 @@ const ProductGridSection = ({
 }: ProductGridSectionProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+ const handleCardClick = () => {
+  cardType === "rental" && setOpenDrawer(true);
+};
   
   return (
     <Box sx={{ mb: 6 }}>
@@ -71,11 +78,13 @@ const ProductGridSection = ({
                 onPause={onPause}
                 onDelete={onDelete}
                 onReport={onReport}
+                 onClick={cardType === "rental" ? handleCardClick : undefined}
               />
             </Grid>
           ))}
         </Grid>
       </Box>
+       <DrawerRental isDrawerOpen={openDrawer} setIsDrawerOpen={setOpenDrawer}/>
     </Box>
   );
 };

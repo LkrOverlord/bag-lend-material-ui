@@ -18,22 +18,26 @@ const typeStyles = {
   [AlertType.WARNING]: {
     bgcolor: '#fff3e0',
     borderColor: '#ffb74d',
-    icon: <WarningRoundedIcon fontSize="medium" color="warning" />,
+    icon: <WarningRoundedIcon fontSize="medium" sx={{ color: '#ed6c02' }} />,
+    textColor: '#8a5300'
   },
   [AlertType.DANGER]: {
     bgcolor: '#ffebee',
     borderColor: '#ef5350',
-    icon: <ErrorRoundedIcon fontSize="medium" color="error" />,
+    icon: <ErrorRoundedIcon fontSize="medium" sx={{ color: '#d32f2f' }} />,
+    textColor: '#c62828'
   },
   [AlertType.SUCCESS]: {
     bgcolor: '#e8f5e9',
     borderColor: '#66bb6a',
-    icon: <CheckCircleRoundedIcon fontSize="medium" color="success" />,
+    icon: <CheckCircleRoundedIcon fontSize="medium" sx={{ color: '#2e7d32' }} />,
+    textColor: '#1b5e20'
   },
   [AlertType.INFO]: {
     bgcolor: '#e3f2fd',
     borderColor: '#90caf9',
-    icon: <InfoRoundedIcon fontSize="medium" color="info" />,
+    icon: <InfoRoundedIcon fontSize="medium" sx={{ color: '#0288d1' }} />,
+    textColor: '#01579b'
   },
 };
 
@@ -41,9 +45,11 @@ const StyledAlert = styled(Alert)(({ theme }) => ({
   borderRadius: '8px',
   padding: '16px',
   alignItems: 'center',
+  color: 'rgba(0, 0, 0, 0.87)', // Fuerza color de texto oscuro
   '& .MuiAlert-icon': {
     padding: '0 12px 0 0',
     marginRight: '8px',
+    color: 'inherit' // Hereda el color del contenedor
   },
 }));
 
@@ -66,6 +72,10 @@ const CustomAlert = ({
         height,
         backgroundColor: selectedStyle.bgcolor,
         border: `1px solid ${selectedStyle.borderColor}`,
+        '& .MuiAlert-message': {
+          color: selectedStyle.textColor,
+          fontWeight: 500
+        },
         ...sx,
       }}
       {...props}
