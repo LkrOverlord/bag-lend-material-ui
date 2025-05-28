@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Box, Card, CardContent, Rating, Typography, useMediaQuery, useTheme } from "@mui/material";
@@ -37,7 +38,8 @@ const BaseCard = ({
     location, 
     rating, 
     tags = [], 
-    isFavorite = false
+    isFavorite = false,
+    status // Add status field
   } = product;
 
   // Direction based on card type and screen size
@@ -80,6 +82,9 @@ const BaseCard = ({
 
   const imageDimensions = getImageDimensions();
 
+  // Check if we should show favorite button (only for favorite and landing card types)
+  const shouldShowFavorite = (cardType === "favorite" || cardType === "landing") && onFavoriteToggle;
+
   return (
     <Card
       sx={{
@@ -117,8 +122,8 @@ const BaseCard = ({
             padding: 1,
             height: "auto"
           }}>
-            {/* Favorite Button */}
-            {cardType === "favorite" && (
+            {/* Favorite Button - Only show for favorite and landing cards */}
+            {shouldShowFavorite && (
               <FavoriteButton 
                 id={id} 
                 initialFavorite={isFavorite} 
@@ -126,7 +131,12 @@ const BaseCard = ({
               />
             )}
 
-            {/* Tag Display */}
+            {/* Status Display for rental cards */}
+            {cardType === "rental" && status && (
+              <TagDisplay tag={status} variant="status" />
+            )}
+
+            {/* Tag Display for favorite cards */}
             {tags.length > 0 && tags[0] && cardType === "favorite" && (
               <TagDisplay tag={tags[0]} />
             )}
@@ -201,7 +211,14 @@ const BaseCard = ({
               {title}
             </Typography>
 
-            {/* Tags - Show for rentalDrawer and rental types */}
+            {/* Status Display - Show for rentalDrawer */}
+            {isRentalDrawer && status && (
+              <Box sx={{ mb: 0 }}>
+                <TagDisplay tag={status} variant="status" />
+              </Box>
+            )}
+
+            {/* Tags - Show for rentalDrawer and rental types (but not status) */}
             {((cardType === "rental" && tags.length > 0 && tags[0]) || 
               (isRentalDrawer && tags.length > 0 && tags[0])) && (
               <Box sx={{ mb: isRentalDrawer ? 0 : 1 }}>

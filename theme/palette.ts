@@ -38,6 +38,31 @@ export const palettes: PaletteConfig = {
       100: '#F5F5F5',
       50: '#FAFAFA',
     },
+    // Status colors
+    warning: {
+      main: '#FF9800', // Orange for pending
+      light: '#FFB74D',
+      dark: '#F57C00',
+      contrastText: '#FFFFFF',
+    },
+    error: {
+      main: '#F44336', // Red for cancelled
+      light: '#EF5350',
+      dark: '#D32F2F',
+      contrastText: '#FFFFFF',
+    },
+    success: {
+      main: '#4CAF50', // Green for active
+      light: '#66BB6A',
+      dark: '#388E3C',
+      contrastText: '#FFFFFF',
+    },
+    info: {
+      main: '#757575', // Gray for closed
+      light: '#9E9E9E',
+      dark: '#424242',
+      contrastText: '#FFFFFF',
+    },
   },
   dark: {
     mode: 'dark',
@@ -71,6 +96,31 @@ export const palettes: PaletteConfig = {
       200: '#404040',
       100: '#333333',
       50: '#1E1E1E',
+    },
+    // Status colors for dark mode
+    warning: {
+      main: '#FFA726', // Lighter orange for dark mode
+      light: '#FFB74D',
+      dark: '#FF9800',
+      contrastText: '#000000',
+    },
+    error: {
+      main: '#EF5350', // Lighter red for dark mode
+      light: '#F44336',
+      dark: '#D32F2F',
+      contrastText: '#FFFFFF',
+    },
+    success: {
+      main: '#66BB6A', // Lighter green for dark mode
+      light: '#81C784',
+      dark: '#4CAF50',
+      contrastText: '#000000',
+    },
+    info: {
+      main: '#9E9E9E', // Lighter gray for dark mode
+      light: '#BDBDBD',
+      dark: '#757575',
+      contrastText: '#000000',
     },
   },
 };

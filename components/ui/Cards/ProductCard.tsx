@@ -6,7 +6,6 @@ import BaseCard from "./BaseCard";
 import { ProductCardProps } from "@/types/Product";
 import { MenuItem } from "@/types/MenuItem";
 
-
 const ProductCard = ({
   product,
   onEdit,
@@ -21,18 +20,15 @@ const ProductCard = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-
   // Card click handler
   const handleCardClick = () => {
     if (cardType === "landing" || cardType === "favorite") {
       router.push(`/products/${product.id}`);
       return;
     }
-
     if (onClick) {
       onClick(); // Solo se ejecuta para rental
     }
-
     // Para listing no hacemos nada a menos que se agregue lógica específica
   };
 
@@ -59,6 +55,9 @@ const ProductCard = ({
       height: isMobile && cardType === "favorite" ? 120 : undefined,
     } : undefined;
 
+  // Only pass onFavoriteToggle for cards that need it (favorite and landing)
+  const shouldPassFavoriteToggle = cardType === "favorite" || cardType === "landing";
+
   return (
     <BaseCard
       product={product}
@@ -73,7 +72,7 @@ const ProductCard = ({
           ? (isMobile ? 120 : 240)
           : 200
       }
-      onFavoriteToggle={onFavoriteToggle}
+      onFavoriteToggle={shouldPassFavoriteToggle ? onFavoriteToggle : undefined}
     />
   );
 };
