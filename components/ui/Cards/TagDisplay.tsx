@@ -1,3 +1,4 @@
+import { ProductStatus } from "@/types/Product";
 import { Box, useTheme } from "@mui/material"
 
 interface TagDisplayProps {
@@ -10,10 +11,10 @@ export const TagDisplay = ({ tag, variant = 'default' }: TagDisplayProps) => {
   
   // Function to get status colors based on tag value
   const getStatusColors = (status: string) => {
-    const normalizedStatus = status.toLowerCase();
+    // const normalizedStatus = status.toLowerCase();
     
-    switch (normalizedStatus) {
-      case 'pending':
+    switch (status) {
+      case ProductStatus.Pending:
         return {
           backgroundColor: '#FFF3ED', // Light orange background
           color: '#FF9F0A', // Orange text

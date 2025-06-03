@@ -4,7 +4,11 @@ import { MenuItem } from "./MenuItem";
 
 export type CardType = "landing" | "listing" | "rental" | "favorite" | "rentalDrawer";
 
-export type ProductStatus = "active" | "pending" | "paused";
+export enum ProductStatus {
+  Active = "Active",
+  Pending = "Pending",
+  Paused = "Paused"
+}
 
 export interface Product {
   id: string;
@@ -16,7 +20,7 @@ export interface Product {
   location?: string;
   rating?: number;
   tags?: string[];
-  status?: ProductStatus;
+  status?: ProductStatus | string;
   isFavorite?: boolean;
 }
 

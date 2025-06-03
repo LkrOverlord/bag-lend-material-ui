@@ -34,11 +34,17 @@ const ProductGridSection = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [openDrawer, setOpenDrawer] = useState(false);
+  // Estado para almacenar el producto seleccionado
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
- const handleCardClick = () => {
-  cardType === "rental" && setOpenDrawer(true);
-};
-  
+  // Función que maneja el click en una card específica
+  const handleCardClick = (product: Product) => {
+    if (cardType === "rental") {
+      setSelectedProduct(product);
+      setOpenDrawer(true);
+    }
+  };
+
   return (
     <Box sx={{ mb: 6 }}>
       {title && (
@@ -62,12 +68,12 @@ const ProductGridSection = ({
         >
           {products.map((product) => (
             <Grid 
-              size={{ 
-                xs: cardType === "favorite" ? 12 : 6, 
-                sm: 6, 
-                md: 4, 
-                lg: 3 
-              }} 
+              size={{
+                xs: cardType === "favorite" ? 12 : 6,
+                sm: 6,
+                md: 4,
+                lg: 3
+              }}
               key={`${title ? title.toLowerCase() : 'product'}-${product.id}`}
             >
               <ProductCard
@@ -78,13 +84,22 @@ const ProductGridSection = ({
                 onPause={onPause}
                 onDelete={onDelete}
                 onReport={onReport}
-                 onClick={cardType === "rental" ? handleCardClick : undefined}
+                // Pasamos una función que incluye el producto específico
+                onClick={cardType === "rental" ? () => handleCardClick(product) : undefined}
               />
             </Grid>
           ))}
         </Grid>
       </Box>
-       <DrawerRental isDrawerOpen={openDrawer} setIsDrawerOpen={setOpenDrawer}/>
+
+      {/* Solo renderizar el drawer si hay un producto seleccionado */}
+      {selectedProduct && (
+        <DrawerRental 
+          isDrawerOpen={openDrawer} 
+          setIsDrawerOpen={setOpenDrawer}
+          product={selectedProduct}
+        />
+      )}
     </Box>
   );
 };

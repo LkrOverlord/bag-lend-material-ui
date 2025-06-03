@@ -35,7 +35,7 @@ export const generateMockProducts = (
     rating: 4.5 - (i % 3) * 0.1,
     tags: [handedness[i % handedness.length]],
     isFavorite: i % favoritePattern === 0,
-    status: i % statusPattern === 0 ? "pending" : "active",
+    status: i % statusPattern === 0 ? "Pending" : "Active",
     currency: "USD",
     period: "day"
   }));
