@@ -1,78 +1,82 @@
-import { ProductStatus } from "@/types/Product";
-import { Box, useTheme } from "@mui/material"
+"use client"
+
+import { ProductStatus } from "@/types/Product"
+import { Box, useMediaQuery, useTheme } from "@mui/material"
 
 interface TagDisplayProps {
   tag: string
-  variant?: 'default' | 'status'
+  variant?: "default" | "status"
 }
 
-export const TagDisplay = ({ tag, variant = 'default' }: TagDisplayProps) => {
-  const theme = useTheme();
-  
+export const TagDisplay = ({ tag, variant = "default" }: TagDisplayProps) => {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
+
   // Function to get status colors based on tag value
   const getStatusColors = (status: string) => {
-    // const normalizedStatus = status.toLowerCase();
-    
     switch (status) {
       case ProductStatus.Pending:
         return {
-          backgroundColor: '#FFF3ED', // Light orange background
-          color: '#FF9F0A', // Orange text
-          borderColor: '#FF9F0A', // Orange border
-        };
-      case 'cancelled':
-      case 'canceled':
+          backgroundColor: "#FFF3ED", // Light orange background
+          color: "#FF9F0A", // Orange text
+          borderColor: "#FF9F0A", // Orange border
+        }
+      case ProductStatus.Cancelled:
         return {
-          backgroundColor: '#FFEBEE', // Light red background
-          color: '#D32F2F', // Red text
-          borderColor: '#D32F2F', // Red border
-        };
-      case 'active':
+          backgroundColor: "#FFEBEE", // Light red background
+          color: "#D32F2F", // Red text
+          borderColor: "#D32F2F", // Red border
+        }
+      case ProductStatus.Active:
         return {
-          backgroundColor: '#E8F5E8', // Light green background
-          color: '#2E7D32', // Green text
-          borderColor: '#2E7D32', // Green border
-        };
-      case 'closed':
+          backgroundColor: "#E8F5E8", // Light green background
+          color: "#2E7D32", // Green text
+          borderColor: "#2E7D32", // Green border
+        }
+      case ProductStatus.Closed:
         return {
-          backgroundColor: '#F5F5F5', // Light gray background
-          color: '#616161', // Gray text
-          borderColor: '#616161', // Gray border
-        };
+          backgroundColor: "#F5F5F5", // Light gray background
+          color: "#616161", // Gray text
+          borderColor: "#616161", // Gray border
+        }
       default:
         return {
           backgroundColor: theme.palette.mode === "light" ? "#FFF" : theme.palette.background.paper,
           color: theme.palette.primary.main,
           borderColor: theme.palette.primary.main,
-        };
+        }
     }
-  };
+  }
 
-  const colors = variant === 'status' ? getStatusColors(tag) : {
-    backgroundColor: theme.palette.mode === "light" ? "#FFF" : theme.palette.background.paper,
-    color: theme.palette.primary.main,
-    borderColor: theme.palette.primary.main,
-  };
+  const colors =
+    variant === "status"
+      ? getStatusColors(tag)
+      : {
+          backgroundColor: theme.palette.mode === "light" ? "#FFF" : theme.palette.background.paper,
+          color: theme.palette.primary.main,
+          borderColor: theme.palette.primary.main,
+        }
 
   return (
     <Box
       sx={{
         width: "fit-content",
         display: "flex",
-        height: { xs: '22px', sm: '28px' },
-        padding: { xs: '2px 4px', sm: '4px 8px' },
+        height: { xs: "22px", sm: "28px" },
+        padding: { xs: "2px 6px", sm: "4px 8px" },
         justifyContent: "center",
         alignItems: "center",
         borderRadius: "4px",
         border: `1px solid ${colors.borderColor}`,
         backgroundColor: colors.backgroundColor,
         color: colors.color,
-        fontSize: { xs: '0.75rem', sm: '0.875rem' }, // 12px - 14px
+        fontSize: { xs: "0.75rem", sm: "0.875rem" },
         fontWeight: 500,
         lineHeight: 1,
+        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
       }}
     >
       {tag}
     </Box>
-  );
-};
+  )
+}

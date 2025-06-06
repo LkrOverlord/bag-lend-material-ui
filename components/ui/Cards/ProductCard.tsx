@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { useRouter } from "next/navigation";
-import { useMediaQuery, useTheme } from "@mui/material";
-import BaseCard from "./BaseCard";
-import { ProductCardProps } from "@/types/Product";
-import { MenuItem } from "@/types/MenuItem";
+import { useRouter } from "next/navigation"
+import { useMediaQuery, useTheme } from "@mui/material"
+import { CardMenuItem, ProductCardProps } from "@/types/Product"
+import BaseCard from "./BaseCard"
+
 
 const ProductCard = ({
   product,
@@ -16,65 +16,90 @@ const ProductCard = ({
   cardType,
   onClick,
 }: ProductCardProps) => {
-  const router = useRouter();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const router = useRouter()
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
-  // Card click handler
+  // Card click handler based on card type
   const handleCardClick = () => {
     if (cardType === "landing" || cardType === "favorite") {
-      router.push(`/products/${product.id}`);
-      return;
+      router.push(`/products/${product.id}`)
+      return
     }
-    if (onClick) {
-      onClick(); // Solo se ejecuta para rental
+    if (cardType === "rental" && onClick) {
+      onClick() // Execute provided onClick for rental
+      return
     }
-    // Para listing no hacemos nada a menos que se agregue lógica específica
-  };
+    // For listing, we don't do anything on card click
+  }
 
   // Get appropriate menu items based on card type
-  const getMenuItems = (): MenuItem[] => {
+  const getMenuItems = (): CardMenuItem[] => {
     switch (cardType) {
       case "listing":
         return [
           { label: "Edit", action: () => onEdit?.(product.id) },
           { label: "Pause", action: () => onPause?.(product.id) },
-          { label: "Delete", action: () => onDelete?.(product.id), color: "error.main" },
-        ];
+          { label: "Delete", action: () => onDelete?.(product.id), color: theme.palette.error.main },
+        ]
       case "rental":
-        return [{ label: "Report problem", action: () => onReport?.(product.id) }];
+        return [{ label: "Report problem", action: () => onReport?.(product.id) }]
       default:
-        return [];
+        return []
     }
-  };
+  }
+
+  // Determine card variant (vertical or horizontal)
+  const getCardVariant = () => {
+    if (cardType === "landing") return "vertical"
+    if (cardType === "favorite" || cardType === "rental" || cardType === "listing") {
+      return isMobile ? "horizontal" : "vertical"
+    }
+    return "vertical" // Default
+  }
 
   // Card style based on type and device
-  const cardStyle =
-    (cardType === "landing" || cardType === "favorite") ? {
-      width: "100%",
-      height: isMobile && cardType === "favorite" ? 120 : undefined,
-    } : undefined;
+  const getCardStyle = () => {
+    if (cardType === "landing") {
+      return {
+        width: "100%",
+        height: isMobile ? 320 : 400,
+      }
+    }
 
-  // Only pass onFavoriteToggle for cards that need it (favorite and landing)
-  const shouldPassFavoriteToggle = cardType === "favorite" || cardType === "landing";
+    if (cardType === "favorite" && isMobile) {
+      return {
+        width: "100%",
+        height: 120,
+      }
+    }
+
+    return {
+      width: "100%",
+    }
+  }
+
+  // Determine if we should show the menu
+  const shouldShowMenu = cardType === "rental" || cardType === "listing"
+
+  // Only pass onFavoriteToggle for cards that need it
+  const shouldPassFavoriteToggle = cardType === "favorite" || cardType === "landing"
 
   return (
     <BaseCard
       product={product}
       onClick={handleCardClick}
       menuItems={getMenuItems()}
-      showMenu={cardType !== "landing"}
-      variant={cardType === "landing" ? "vertical" : "horizontal"}
+      showMenu={shouldShowMenu}
+      variant={getCardVariant()}
       cardType={cardType}
-      sx={cardStyle}
-      imageHeight={
-        cardType === "landing" || cardType === "favorite"
-          ? (isMobile ? 120 : 240)
-          : 200
-      }
+      sx={getCardStyle()}
+      imageHeight={cardType === "landing" ? (isMobile ? 180 : 240) : isMobile ? 120 : 200}
       onFavoriteToggle={shouldPassFavoriteToggle ? onFavoriteToggle : undefined}
+      showRating={cardType !== "listing"}
+      showLocation={cardType !== "listing"}
     />
-  );
-};
+  )
+}
 
-export default ProductCard;
+export default ProductCard

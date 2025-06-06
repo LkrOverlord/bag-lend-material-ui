@@ -1,15 +1,17 @@
-export type StepConfig = {
+import type { ReactNode } from "react"
+
+export interface StepConfig {
   header: {
-    title: string;
-    titlePosition: 'left' | 'right';
-    backButton?: boolean;
-    closeButton?: boolean;
-  };
-  body: React.ReactNode;
+    title: string
+    titlePosition: "left" | "center" | "right"
+    backButton: boolean
+    closeButton: boolean
+  }
+  body: ReactNode
   footer?: {
     submitButton?: {
-      text: string;
-      onClick: () => void | Promise<void>;
-    };
-  };
-};
+      text: string
+      onClick: () => Promise<void> | void
+    }
+  }
+}

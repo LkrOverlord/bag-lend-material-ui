@@ -4,8 +4,9 @@ import type React from "react"
 
 import { useState } from "react"
 import { Box, IconButton, Menu, MenuItem } from "@mui/material"
-import {  MoreHoriz } from "@mui/icons-material"
-import { CardMenuItem } from "@/types/CardTypes"
+import { MoreHoriz } from "@mui/icons-material"
+import { CardMenuItem } from "@/types/Product"
+
 
 interface CardMenuProps {
   menuItems: CardMenuItem[]
@@ -31,13 +32,44 @@ export const CardMenu = ({ menuItems }: CardMenuProps) => {
   }
 
   return (
-    <Box >
-      <IconButton onClick={handleMenuClick} size="small">
+    <Box>
+      <IconButton
+        onClick={handleMenuClick}
+        size="small"
+        sx={{
+          padding: "4px",
+          "&:hover": {
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
+          },
+        }}
+      >
         <MoreHoriz />
       </IconButton>
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+        elevation={2}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
         {menuItems.map((item, index) => (
-          <MenuItem key={index} onClick={handleMenuItemClick(item.action)} sx={{ color: item.color }}>
+          <MenuItem
+            key={index}
+            onClick={handleMenuItemClick(item.action)}
+            sx={{
+              color: item.color,
+              fontSize: "0.875rem",
+              py: 1,
+              px: 2,
+            }}
+          >
             {item.label}
           </MenuItem>
         ))}
@@ -45,4 +77,3 @@ export const CardMenu = ({ menuItems }: CardMenuProps) => {
     </Box>
   )
 }
-

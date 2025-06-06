@@ -1,37 +1,38 @@
-"use client";
+"use client"
 
-import MenuWithUnderline from '@/components/ui/Menus/Menu';
-import { Box, Container, useTheme } from '@mui/material';
-import { useState } from 'react';
-import { CardType } from '@/types/Product';
-import { generateMockProducts } from '@/utils/mockUtils';
-import ProductGridSection from '@/components/ui/Lists/ProductGridSection';
+import ProductGridSection from "@/components/ui/Lists/ProductGridSection"
+import MenuWithUnderline from "@/components/ui/Menus/Menu"
+import { CardType } from "@/types/Product"
+import { generateMockProducts } from "@/utils/mockUtils"
+import { Box, Container, useTheme } from "@mui/material"
+import { useState } from "react"
+
 
 
 const MyListingsPage = () => {
-  const theme = useTheme();
-  const pages = ['Active Listings', 'Active Rentals', 'Paused Listings'];
-  const [cardType] = useState<CardType>("listing");
-  
+  const theme = useTheme()
+  const pages = ["Active Listings", "Active Rentals", "Paused Listings"]
+  const [cardType] = useState<CardType>("listing")
+
   // Generate mock products from utility function
-  const products = generateMockProducts(12);
-  
+  const products = generateMockProducts(12)
+
   // Event handlers
-  const handleFavoriteToggle = (id: string) => console.log(`Toggle favorite for product ${id}`);
-  const handleEdit = (id: string) => console.log(`Edit product ${id}`);
-  const handlePause = (id: string) => console.log(`Pause product ${id}`);
-  const handleDelete = (id: string) => console.log(`Delete product ${id}`);
+  const handleFavoriteToggle = (id: string) => console.log(`Toggle favorite for product ${id}`)
+  const handleEdit = (id: string) => console.log(`Edit product ${id}`)
+  const handlePause = (id: string) => console.log(`Pause product ${id}`)
+  const handleDelete = (id: string) => console.log(`Delete product ${id}`)
 
   return (
     <Box>
       <Box sx={{ padding: "0 32px" }}>
-        <MenuWithUnderline 
-          pages={pages} 
-          textColor={theme.palette.grey[800]} 
-          displayStyle={{ xs: 'none', md: 'flex' }} 
+        <MenuWithUnderline
+          pages={pages}
+          textColor={theme.palette.grey[800]}
+          displayStyle={{ xs: "none", md: "flex" }}
         />
       </Box>
-      
+
       <Container
         maxWidth="xl"
         sx={{
@@ -43,6 +44,7 @@ const MyListingsPage = () => {
         }}
       >
         <ProductGridSection
+          title="Your Listings"
           products={products}
           cardType={cardType}
           onFavoriteToggle={handleFavoriteToggle}
@@ -52,7 +54,7 @@ const MyListingsPage = () => {
         />
       </Container>
     </Box>
-  );
-};
+  )
+}
 
-export default MyListingsPage;
+export default MyListingsPage

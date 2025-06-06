@@ -13,9 +13,9 @@ interface FavoriteButtonProps {
 }
 
 export const FavoriteButton = ({ id, initialFavorite, onToggle }: FavoriteButtonProps) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const [isFavorite, setIsFavorite] = useState(initialFavorite)
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
+  const [isFavorite, setIsFavorite] = useState(initialFavorite)
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
@@ -25,18 +25,19 @@ export const FavoriteButton = ({ id, initialFavorite, onToggle }: FavoriteButton
 
   return (
     <IconButton
-      size={isMobile ? "small" : "medium"} // Tamaño responsive
+      size={isMobile ? "small" : "medium"}
       sx={{
-        bgcolor: "background.paper",
-        "&:hover": { bgcolor: "background.default" },
-        p: { xs: '4px', sm: '8px' }, // Padding responsive
-        '& svg': {
-          fontSize: { xs: '1rem', sm: '1.25rem' } // Tamaño de ícono
-        }
+        bgcolor: "rgba(255, 255, 255, 0.8)",
+        "&:hover": { bgcolor: "background.paper" },
+        p: { xs: "4px", sm: "8px" },
+        "& svg": {
+          fontSize: { xs: "1rem", sm: "1.25rem" },
+        },
+        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
       }}
       onClick={handleClick}
     >
-      {isFavorite ? <FavoriteIcon color="primary" /> : <FavoriteBorderIcon />}
+      {isFavorite ? <FavoriteIcon sx={{ color: theme.palette.primary.main }} /> : <FavoriteBorderIcon />}
     </IconButton>
-  );
-};
+  )
+}

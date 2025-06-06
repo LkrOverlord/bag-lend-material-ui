@@ -1,42 +1,40 @@
-// src/utils/mockUtils.ts
 import Product1Hardcode from "@/public/assets/HarcodeProducts/Product-1-Harcode.svg";
-import { Product } from "@/types/Product";
+import { Product, ProductStatus } from "@/types/Product";
 
-/**
- * Generates an array of mock products for development and testing
- * 
- * @param count Number of products to generate
- * @param options Optional configuration for generated products
- * @returns Array of mock product objects
- */
-export const generateMockProducts = (
-  count: number, 
-  options?: {
-    basePrice?: number,
-    favoritePattern?: number, // Every nth product will be favorite
-    statusPattern?: number    // Every nth product will have pending status
+interface MockProductOptions {
+  basePrice?: number
+  withStatus?: boolean
+}
+
+export const generateMockProducts = (count: number, options: MockProductOptions = {}): Product[] => {
+  const { basePrice = 25, withStatus = true } = options
+
+  const products: Product[] = []
+  const statuses = Object.values(ProductStatus)
+  const handTypes = ["left-handed", "right-handed"] as const
+
+  for (let i = 0; i < count; i++) {
+    const id = `product-${i + 1}`
+    // Use deterministic values instead of Math.random() to avoid hydration errors
+    const isFavorite = i % 3 === 0 // Every 3rd product is favorite
+    const price = basePrice + i * 5 // Deterministic price increment
+    const rating = 3.5 + (i % 3) * 0.5 // Deterministic rating (3.5, 4.0, 4.5)
+    const statusIndex = i % statuses.length
+    const handTypeIndex = i % handTypes.length
+
+    products.push({
+      id,
+      title: i % 3 === 0 ? "Premium Pack (6 Clubs)" : `DRIVER TSi${(i % 4) + 1}`,
+      image: Product1Hardcode,
+      price,
+      location: "Los Angeles, CA",
+      rating: Number.parseFloat(rating.toFixed(1)),
+      isFavorite,
+      status: withStatus ? statuses[statusIndex] : undefined,
+      handType: handTypes[handTypeIndex],
+      tags: [handTypes[handTypeIndex]],
+    })
   }
-): Product[] => {
-  const {
-    basePrice = 25,
-    favoritePattern = 4,
-    statusPattern = 5
-  } = options || {};
 
-  const locations = ["Los Angeles, CA", "San Francisco, CA", "New York, NY"];
-  const handedness = ["Left-handed", "Right-handed"];
-
-  return Array.from({ length: count }, (_, i) => ({
-    id: String(i + 1),
-    title: `Product ${i + 1}`,
-    image: Product1Hardcode,
-    price: basePrice + i,
-    location: locations[i % locations.length],
-    rating: 4.5 - (i % 3) * 0.1,
-    tags: [handedness[i % handedness.length]],
-    isFavorite: i % favoritePattern === 0,
-    status: i % statusPattern === 0 ? "Pending" : "Active",
-    currency: "USD",
-    period: "day"
-  }));
-};
+  return products
+}
