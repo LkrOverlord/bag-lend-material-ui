@@ -6,6 +6,7 @@ export interface FormField {
   flex?: string;
   loft?: number;
   shaft?: 'Steel' | 'Graphite';
+  clubSelections?: Record<string, number>;
 }
 
 export type FormType = ClubType.DRIVER | ClubType.HYBRID | ClubType.IRONS | ClubType.PUTTER | ClubType.WEDGES | ClubType.WOODS;
@@ -17,6 +18,7 @@ export interface FormConfig {
     flex?: boolean;
     loft?: boolean;
     shaft?: boolean;
+    clubSelections?: boolean;
   };
   title?: string;
 }
@@ -27,4 +29,5 @@ export interface GolfClubFormProps {
   onValidationChange?: (isValid: boolean) => void;
   initialData?: Partial<FormField>;
   config?: FormConfig;
+  clubOptions?: Record<string, string>; // Nueva prop para las opciones de palos
 }

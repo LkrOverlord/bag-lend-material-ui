@@ -28,6 +28,7 @@ export const formConfigs: Record<FormType, FormConfig> = {
       model: true,
       flex: true,
       loft: true,
+      clubSelections: true
     },
     title: 'club'
   },
@@ -35,9 +36,9 @@ export const formConfigs: Record<FormType, FormConfig> = {
     fields: {
       brand: true,
       model: true,
-      flex: false,
-      loft: false,
-      shaft: false
+      flex: true,
+      loft: true,
+      clubSelections: true
     },
     title: 'Product Information'
   },
@@ -47,7 +48,8 @@ export const formConfigs: Record<FormType, FormConfig> = {
       model: true,
       flex: true,
       loft: false,
-      shaft: true
+      shaft: true,
+      clubSelections: true
     },
     title: 'Equipment Details'
   },
@@ -57,7 +59,8 @@ export const formConfigs: Record<FormType, FormConfig> = {
       model: true,
       flex: true,
       loft: false,
-      shaft: true
+      shaft: true,
+      clubSelections: true
     },
     title: 'Equipment Details'
   },
@@ -67,7 +70,8 @@ export const formConfigs: Record<FormType, FormConfig> = {
       model: true,
       flex: true,
       loft: false,
-      shaft: true
+      shaft: true,
+      clubSelections: true
     },
     title: 'Equipment Details'
   },
@@ -77,7 +81,8 @@ export const formConfigs: Record<FormType, FormConfig> = {
       model: true,
       flex: true,
       loft: false,
-      shaft: true
+      shaft: true,
+      clubSelections: true
     },
     title: 'Equipment Details'
   }

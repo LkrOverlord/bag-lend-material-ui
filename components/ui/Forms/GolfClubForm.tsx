@@ -21,6 +21,7 @@ import { FormField, GolfClubFormProps } from '@/types/FormTypes';
 import { getFormConfig } from '@/utils/formConfig';
 import { Controller, useForm } from 'react-hook-form';
 import { getValidationRules } from '@/utils/formValidations';
+import ClubQuantitySelector from './ClubQuantitySelection';
 
 const flexOptions = [
     'X Stiff',
@@ -33,15 +34,18 @@ const flexOptions = [
 const GolfClubForm: React.FC<GolfClubFormProps> = ({
     type,
     initialData = {},
-    config: customConfig
+    config: customConfig,
+    clubOptions // Nueva prop para las opciones de palos
 }) => {
     const formConfig = customConfig || getFormConfig(type);
     const [isValidForm, setIsValidForm] = useState(false);
-    const [isExpanded, setIsExpanded] = useState(true); // Estado para el collapse
+    const [isExpanded, setIsExpanded] = useState(true);
 
     const {
         control,
         handleSubmit,
+        setValue,
+        watch,
         formState: { errors, isValid, isDirty }
     } = useForm<FormField>({
         mode: 'onChange',
@@ -50,7 +54,8 @@ const GolfClubForm: React.FC<GolfClubFormProps> = ({
             model: initialData.model || '',
             flex: initialData.flex || 'X Stiff',
             loft: initialData.loft || 5.5,
-            shaft: initialData.shaft || 'Steel'
+            shaft: initialData.shaft || 'Steel',
+            clubSelections: initialData.clubSelections || {}
         }
     });
 
@@ -87,10 +92,10 @@ const GolfClubForm: React.FC<GolfClubFormProps> = ({
         <Paper elevation={1} sx={{ p: 3, maxWidth: 500, mx: 'auto' }}>
             {/* Header con título y botón de collapse */}
             {formConfig.title && (
-                <Box 
-                    sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
                         justifyContent: 'space-between',
                         cursor: 'pointer',
                         mb: 2
@@ -100,9 +105,9 @@ const GolfClubForm: React.FC<GolfClubFormProps> = ({
                     <Typography variant="h6" component="h2">
                         {formConfig.title}
                     </Typography>
-                    <IconButton 
+                    <IconButton
                         size="small"
-                        sx={{ 
+                        sx={{
                             transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)',
                             transition: 'transform 0.2s ease-in-out'
                         }}
@@ -177,7 +182,7 @@ const GolfClubForm: React.FC<GolfClubFormProps> = ({
                                             ))}
                                         </Select>
                                         {errors.flex && (
-                                            <FormHelperText>{errors.flex.message}</FormHelperText>
+                                            <FormHelperText>{errors.flex?.message}</FormHelperText>
                                         )}
                                     </FormControl>
                                 )}
@@ -199,10 +204,12 @@ const GolfClubForm: React.FC<GolfClubFormProps> = ({
                                         fullWidth
                                         error={!!errors.loft}
                                         helperText={errors.loft?.message}
-                                        inputProps={{
-                                            step: 0.5,
-                                            min: 1,
-                                            max: 90
+                                        slotProps={{
+                                            htmlInput: {
+                                                step: 0.5,
+                                                min: 1,
+                                                max: 90
+                                            }
                                         }}
                                     />
                                 )}
@@ -243,7 +250,36 @@ const GolfClubForm: React.FC<GolfClubFormProps> = ({
                                             />
                                         </Box>
                                         {errors.shaft && (
-                                            <FormHelperText error>{errors.shaft.message}</FormHelperText>
+                                            <FormHelperText error>
+                                                {errors.shaft.message as React.ReactNode}
+                                            </FormHelperText>
+                                        )}
+                                    </Box>
+                                )}
+                            />
+                        )}
+
+                        {/* Club Selections Field */}
+                        {formConfig.fields.clubSelections && clubOptions && (
+                            <Controller
+                                name="clubSelections"
+                                control={control}
+                                rules={getValidationRules('clubSelections')}
+                                render={({ field }) => (
+                                    <Box>
+                                        <ClubQuantitySelector
+                                            defaultClubs={clubOptions}
+                                            maxCustomClubs={5}
+                                            onChange={(selections) => {
+                                                field.onChange(selections);
+                                                setValue('clubSelections', selections);
+                                            }}
+                                            initialSelections={field.value || {}}
+                                        />
+                                        {errors.clubSelections && (
+                                            <FormHelperText error>
+                                                {errors.clubSelections.message as React.ReactNode}
+                                            </FormHelperText>
                                         )}
                                     </Box>
                                 )}

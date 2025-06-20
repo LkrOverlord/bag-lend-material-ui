@@ -43,9 +43,37 @@ export const formValidations = {
   },
   shaft: {
     required: 'Shaft material is required'
+  },
+  clubSelections: {
+    validate: (value: Record<string, number> | undefined) => {
+      // Si no hay valor o está vacío
+      if (!value || Object.keys(value).length === 0) {
+        return 'Please select at least one club';
+      }
+      
+      // Verificar que al menos una selección tenga cantidad > 0
+      const hasValidSelections = Object.values(value).some(quantity => 
+        quantity && quantity > 0
+      );
+      
+      if (!hasValidSelections) {
+        return 'Please select at least one club with quantity greater than 0';
+      }
+      
+      // Verificar que las cantidades sean números válidos
+      const hasInvalidQuantities = Object.values(value).some(quantity => 
+        typeof quantity !== 'number' || quantity < 0 || !Number.isInteger(quantity)
+      );
+      
+      if (hasInvalidQuantities) {
+        return 'All quantities must be valid positive integers';
+      }
+      
+      return true;
+    }
   }
 };
 
-export const getValidationRules = (fieldName: keyof FormField) => {
-  return formValidations[fieldName];
+export const getValidationRules = (fieldName: keyof FormField): any => {
+  return formValidations[fieldName as keyof typeof formValidations];
 };
