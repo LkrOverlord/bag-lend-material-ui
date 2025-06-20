@@ -36,7 +36,7 @@ export const typography: TypographyOptions = {
   h5: {
     fontFamily: 'var(--font-rubik), sans-serif',
     fontWeight: 600,
-    fontSize: '1.5rem',
+    fontSize: '1.25rem',
     lineHeight: 1.2,
     fontFeatureSettings: "'liga' off",
   },

@@ -4,12 +4,15 @@ import { getButtonOverrides } from './button';
 import { getCardOverrides } from './card';
 import { getTableOverrides } from './table';
 import { getCardContentOverrides } from './cardContent';
+import { getFormOverrides } from './formt';
 
 export const components = (mode: PaletteMode) => ({
   MuiButton: getButtonOverrides(mode),
   MuiCard: getCardOverrides(mode),
   MuiCardContent: getCardContentOverrides(mode),
   MuiTable: getTableOverrides(mode),
+
+  ...getFormOverrides(mode),
   MuiAppBar: {
     styleOverrides: {
       root: {

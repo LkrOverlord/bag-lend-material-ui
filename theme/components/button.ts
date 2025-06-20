@@ -16,9 +16,9 @@ export const getButtonOverrides = (mode: PaletteMode) => ({
       },
     },
     containedPrimary: {
-      backgroundColor: mode === 'light' ? '#89C96A' : '#42a5f5', // Color base
+      backgroundColor: mode === 'light' ? '#89C96A' : '#89C96A', // Color base
       '&:hover': {
-        backgroundColor: mode === 'light' ? '#89C96A' : 'inherit', // Color hover
+        backgroundColor: mode === 'light' ? '#89C96A' : '#057013', // Color hover
         // Opcional: Añadir transición suave
         transition: 'background-color 0.3s ease',
       },
