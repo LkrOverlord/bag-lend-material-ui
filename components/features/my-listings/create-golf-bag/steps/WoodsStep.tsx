@@ -10,13 +10,6 @@ const WoodsStep = (props: Props) => {
   const handleSubmit = (data: any) => {
     console.log('Datos válidos:', data);
     console.log('Club selections:', data.clubSelections);
-    
-    // Ejemplo de lo que recibirás en data.clubSelections:
-    // {
-    //   "3": 1,           // 3 Wood quantity
-    //   "5": 2,           // 5 Wood quantity  
-    //   "Custom Driver": 1 // Custom club
-    // }
   };
 
   return (
