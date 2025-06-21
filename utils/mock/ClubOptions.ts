@@ -10,13 +10,16 @@ export const clubOptionsByType: Record<string, Record<string, string>> = {
     "9": "9 Wood"
   },
   [ClubType.IRONS]: {
-    "3": "3 Iron",
-    "4": "4 Iron",
-    "5": "5 Iron",
-    "6": "6 Iron",
-    "7": "7 Iron",
-    "8": "8 Iron",
-    "9": "9 Iron"
+    "1": "1",
+    "2": "2",
+    "3": "3",
+    "4": "4",
+    "5": "5",
+    "6": "6",
+    "7": "7",
+    "8": "8",
+    "9": "9",
+    "10": "PW"
   },
   [ClubType.WEDGES]: {
     "pw": "Pitching Wedge",
@@ -25,10 +28,10 @@ export const clubOptionsByType: Record<string, Record<string, string>> = {
     "lw": "Lob Wedge"
   },
   [ClubType.HYBRID]: {
-    "2": "2 Hybrid",
-    "3": "3 Hybrid",
-    "4": "4 Hybrid",
-    "5": "5 Hybrid"
+    "3": "3",
+    "4": "4",
+    "5": "5",
+    "6": "6"
   },
   [ClubType.DRIVER]: {
     "driver": "Driver"

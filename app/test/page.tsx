@@ -1,6 +1,10 @@
 import CreateGolfBag from '@/components/features/my-listings/create-golf-bag/steps'
 import DriverStep from '@/components/features/my-listings/create-golf-bag/steps/DriverStep'
 import GolfClubSelector from '@/components/features/my-listings/create-golf-bag/steps/GolfClubTypeStep'
+import HybridStep from '@/components/features/my-listings/create-golf-bag/steps/HybridStep'
+import IronsStep from '@/components/features/my-listings/create-golf-bag/steps/IronsStep'
+import PutterStep from '@/components/features/my-listings/create-golf-bag/steps/PutterStep'
+import WedgesStep from '@/components/features/my-listings/create-golf-bag/steps/WedgesStep'
 import WoodsStep from '@/components/features/my-listings/create-golf-bag/steps/WoodsStep'
 import { ClubType } from '@/types/GolfClub'
 import { Box } from '@mui/material'
@@ -24,6 +28,26 @@ const TestPage = (props: Props) => {
         {
             title: `Provide additional information for the ${ClubType.WOODS}`,
             component: <WoodsStep />,
+            canContinue: true
+        },
+        {
+            title: `Provide additional information for the ${ClubType.HYBRID} / rescue clubs`,
+            component: <HybridStep />,
+            canContinue: true
+        },
+        {
+            title: `Provide additional information for the ${ClubType.IRONS}`,
+            component: <IronsStep />,
+            canContinue: true
+        },
+        {
+            title: `Provide additional information for the ${ClubType.WEDGES}`,
+            component: <WedgesStep />,
+            canContinue: true
+        },
+        {
+            title: `Provide additional information for the ${ClubType.PUTTER}`,
+            component: <PutterStep />,
             canContinue: true
         },
     ];

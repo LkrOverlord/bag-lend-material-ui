@@ -1,11 +1,16 @@
 import { ClubType } from "./GolfClub";
 
+export interface ShaftItem {
+  id: string;
+  name: string;
+}
+
 export interface FormField {
   brand?: string;
   model?: string;
   flex?: string;
   loft?: number;
-  shaft?: 'Steel' | 'Graphite';
+  shaft?: ShaftItem[];
   clubSelections?: Record<string, number>;
 }
 

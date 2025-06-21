@@ -14,14 +14,17 @@ import {
     Paper,
     FormHelperText,
     Collapse,
-    IconButton
+    IconButton,
+    InputAdornment
 } from '@mui/material';
-import { ExpandMore, ExpandLess } from '@mui/icons-material';
+
 import { FormField, GolfClubFormProps } from '@/types/FormTypes';
 import { getFormConfig } from '@/utils/formConfig';
 import { Controller, useForm } from 'react-hook-form';
 import { getValidationRules } from '@/utils/formValidations';
 import ClubQuantitySelector from './ClubQuantitySelection';
+import { ClubType } from '@/types/GolfClub';
+import { ExpandMore } from '@mui/icons-material';
 
 const flexOptions = [
     'X Stiff',
@@ -31,15 +34,217 @@ const flexOptions = [
     'Ladies'
 ];
 
+// Tipos actualizados para shaft
+interface ShaftItem {
+    id: string;
+    name: string;
+}
+
+interface PutterShaftSelectorProps {
+    value: ShaftItem[];
+    onChange: (value: ShaftItem[]) => void;
+    maxCustomItems?: number;
+}
+
+const PutterShaftSelector: React.FC<PutterShaftSelectorProps> = ({
+    value,
+    onChange,
+    maxCustomItems = 5
+}) => {
+    const [customInput, setCustomInput] = useState('');
+    const [customItems, setCustomItems] = useState<ShaftItem[]>([]);
+
+    // Elementos por defecto
+    const defaultItems: ShaftItem[] = [
+        { id: 'blade-putter', name: 'Blade Putter' },
+        { id: 'mallet-putter', name: 'Mallet Putter' }
+    ];
+
+    // Obtener todos los items disponibles
+    const allItems = [...defaultItems, ...customItems];
+
+    const isItemSelected = (item: ShaftItem): boolean => {
+        return value.some(selected => selected.id === item.id);
+    };
+
+    const handleItemChange = (item: ShaftItem, checked: boolean) => {
+        let newSelection: ShaftItem[];
+
+        if (checked) {
+            newSelection = [...value, item];
+        } else {
+            newSelection = value.filter(selected => selected.id !== item.id);
+            // Si es un item personalizado y se desmarca, eliminarlo de customItems
+            if (!defaultItems.some(defaultItem => defaultItem.id === item.id)) {
+                setCustomItems(prev => prev.filter(custom => custom.id !== item.id));
+            }
+        }
+
+        onChange(newSelection);
+    };
+
+    const generateId = (name: string): string => {
+        return name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    };
+
+    const handleAddCustomItem = () => {
+        if (customInput.trim() &&
+            customItems.length < maxCustomItems &&
+            !allItems.some(item => item.name.toLowerCase() === customInput.trim().toLowerCase())) {
+
+            const newItem: ShaftItem = {
+                id: generateId(customInput.trim()) + '-' + Date.now(),
+                name: customInput.trim()
+            };
+
+            setCustomItems(prev => [...prev, newItem]);
+
+            // Agregar automáticamente a la selección
+            const newSelection = [...value, newItem];
+            onChange(newSelection);
+
+            setCustomInput('');
+        }
+    };
+
+    const handleInputKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleAddCustomItem();
+        }
+    };
+
+    return (
+        <Box>
+            <Typography variant="subtitle1" gutterBottom>
+                Select all that apply
+            </Typography>
+
+            {/* Elementos disponibles */}
+            {allItems.map((item) => (
+                <Box
+                    key={item.id}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        py: 1,
+                        borderBottom: '1px solid #e0e0e0'
+                    }}
+                >
+                    <Typography variant="body2">{item.name}</Typography>
+                    <Checkbox
+                        checked={isItemSelected(item)}
+                        onChange={(e) => handleItemChange(item, e.target.checked)}
+                        color="primary"
+                    />
+                </Box>
+            ))}
+
+            {/* Input para agregar nuevos elementos */}
+            {customItems.length < maxCustomItems && (
+                <Box sx={{ mt: 2 }}>
+                    <TextField
+                        fullWidth
+                        size="small"
+                        placeholder="Other"
+                        value={customInput}
+                        onChange={(e) => setCustomInput(e.target.value)}
+                        onKeyDown={handleInputKeyDown}
+                        variant="outlined"
+                        slotProps={{
+                            input: {
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <Typography variant="caption" color="text.secondary">
+                                            Press Enter
+                                        </Typography>
+                                    </InputAdornment>
+                                )
+                            }
+                        }}
+                    />
+                </Box>
+            )}
+        </Box>
+    );
+};
+
+interface RegularShaftSelectorProps {
+    value: ShaftItem[];
+    onChange: (value: ShaftItem[]) => void;
+}
+
+const RegularShaftSelector: React.FC<RegularShaftSelectorProps> = ({
+    value,
+    onChange
+}) => {
+    const shaftOptions: ShaftItem[] = [
+        { id: 'steel', name: 'Steel' },
+        { id: 'graphite', name: 'Graphite' }
+    ];
+
+    const isItemSelected = (item: ShaftItem): boolean => {
+        return value.some(selected => selected.id === item.id);
+    };
+
+    const handleShaftChange = (item: ShaftItem) => {
+        // Para tipos regulares, solo se permite una selección
+        onChange([item]);
+    };
+
+    return (
+        <Box>
+            <Typography variant="subtitle1" gutterBottom>
+                Shaft
+            </Typography>
+            {shaftOptions.map((option) => (
+                <Box
+                    key={option.id}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        py: 1,
+                        borderBottom: '1px solid #e0e0e0'
+                    }}
+                >
+                    <Typography variant="body2">{option.name}</Typography>
+                    <Checkbox
+                        checked={isItemSelected(option)}
+                        onChange={() => handleShaftChange(option)}
+                        color="primary"
+                    />
+                </Box>
+            ))}
+        </Box>
+    );
+};
+
 const GolfClubForm: React.FC<GolfClubFormProps> = ({
     type,
     initialData = {},
     config: customConfig,
-    clubOptions // Nueva prop para las opciones de palos
+    clubOptions,
+    onSubmit,
+    onValidationChange
 }) => {
     const formConfig = customConfig || getFormConfig(type);
     const [isValidForm, setIsValidForm] = useState(false);
     const [isExpanded, setIsExpanded] = useState(true);
+
+    // Función helper para obtener el valor inicial del shaft como array de objetos
+    const getInitialShaftValue = (): ShaftItem[] => {
+        if (Array.isArray(initialData.shaft)) {
+            return initialData.shaft;
+        }
+        // Valor por defecto según el tipo
+        if (type === ClubType.PUTTER) {
+            return [];
+        } else {
+            return [{ id: 'steel', name: 'Steel' }];
+        }
+    };
 
     const {
         control,
@@ -54,7 +259,7 @@ const GolfClubForm: React.FC<GolfClubFormProps> = ({
             model: initialData.model || '',
             flex: initialData.flex || 'X Stiff',
             loft: initialData.loft || 5.5,
-            shaft: initialData.shaft || 'Steel',
+            shaft: getInitialShaftValue(),
             clubSelections: initialData.clubSelections || {}
         }
     });
@@ -63,6 +268,7 @@ const GolfClubForm: React.FC<GolfClubFormProps> = ({
         if (value === undefined) return false;
         if (value === null) return false;
         if (value === '') return false;
+        if (Array.isArray(value) && value.length === 0) return false;
         return true;
     };
 
@@ -81,7 +287,10 @@ const GolfClubForm: React.FC<GolfClubFormProps> = ({
 
         if (allFieldsCompleted) {
             console.log("Formulario válido, datos:", allFormData);
+            onSubmit?.(allFormData);
         }
+
+        onValidationChange?.(allFieldsCompleted);
     };
 
     const handleToggleCollapse = () => {
@@ -224,31 +433,22 @@ const GolfClubForm: React.FC<GolfClubFormProps> = ({
                                 rules={getValidationRules('shaft')}
                                 render={({ field }) => (
                                     <Box>
-                                        <Typography variant="subtitle1" gutterBottom>
-                                            Shaft
-                                        </Typography>
-                                        <Box sx={{ display: 'flex', gap: 2 }}>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        checked={field.value === 'Steel'}
-                                                        onChange={() => field.onChange('Steel')}
-                                                        color="primary"
-                                                    />
-                                                }
-                                                label="Steel"
+                                        {type === ClubType.PUTTER ? (
+                                            <PutterShaftSelector
+                                                value={Array.isArray(field.value) ? field.value : []}
+                                                onChange={(newValue) => {
+                                                    field.onChange(newValue);
+                                                }}
+                                                maxCustomItems={6}
                                             />
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        checked={field.value === 'Graphite'}
-                                                        onChange={() => field.onChange('Graphite')}
-                                                        color="primary"
-                                                    />
-                                                }
-                                                label="Graphite"
+                                        ) : (
+                                            <RegularShaftSelector
+                                                value={Array.isArray(field.value) ? field.value : []}
+                                                onChange={(newValue) => {
+                                                    field.onChange(newValue);
+                                                }}
                                             />
-                                        </Box>
+                                        )}
                                         {errors.shaft && (
                                             <FormHelperText error>
                                                 {errors.shaft.message as React.ReactNode}

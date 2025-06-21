@@ -49,7 +49,6 @@ export const formConfigs: Record<FormType, FormConfig> = {
       flex: true,
       loft: false,
       shaft: true,
-      clubSelections: true
     },
     title: 'Equipment Details'
   },
@@ -58,11 +57,11 @@ export const formConfigs: Record<FormType, FormConfig> = {
       brand: true,
       model: true,
       flex: true,
-      loft: false,
+      loft: true,
       shaft: true,
       clubSelections: true
     },
-    title: 'Equipment Details'
+    title: 'Provide addtional information for the hybrid / rescue clubs'
   },
   'irons': {
     fields: {

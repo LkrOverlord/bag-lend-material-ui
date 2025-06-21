@@ -25,7 +25,7 @@ interface CustomClub {
 
 const ClubQuantitySelector: React.FC<ClubQuantitySelectorProps> = ({
     defaultClubs,
-    maxCustomClubs = 5,
+    maxCustomClubs = 10,
     onChange,
     initialSelections = {}
 }) => {
